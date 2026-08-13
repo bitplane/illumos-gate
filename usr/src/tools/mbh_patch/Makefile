@@ -30,7 +30,9 @@ PROG	= mbh_patch
 
 include ../Makefile.tools
 
-CPPFLAGS += -I../../uts/common
+CPPFLAGS_illumos = -I../../uts/common
+CPPFLAGS_linux = -Ilinux -_gcc=-idirafter -_gcc=../../uts/common
+CPPFLAGS += $(CPPFLAGS_$(NATIVE_OS))
 
 .KEEP_STATE:
 

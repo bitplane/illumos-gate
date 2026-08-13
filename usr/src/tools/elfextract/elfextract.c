@@ -35,9 +35,17 @@
 #include <stdio.h>
 #include <errno.h>
 #include <sys/types.h>
+#ifdef __linux__
+#include <stdint.h>
+#include <elf.h>
+#include <string.h>
+typedef unsigned char uchar_t;
+typedef unsigned int uint_t;
+#else
 #include <sys/inttypes.h>
 #include <sys/elf.h>
 #include <sys/elf_notes.h>
+#endif
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>

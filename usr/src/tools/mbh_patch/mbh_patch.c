@@ -30,9 +30,19 @@
 #include <strings.h>
 #include <stdio.h>
 #include <sys/types.h>
+#ifdef __linux__
+#include <stdint.h>
+#include <elf.h>
+#include <string.h>
+typedef unsigned char uchar_t;
+#ifndef P2ROUNDUP
+#define P2ROUNDUP(x, align) (-(-(x) & -(align)))
+#endif
+#else
 #include <sys/inttypes.h>
 #include <sys/elf.h>
 #include <sys/elf_notes.h>
+#endif
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
