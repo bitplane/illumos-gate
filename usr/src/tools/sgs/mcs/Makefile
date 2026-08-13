@@ -16,7 +16,13 @@ include		$(SRC)/Makefile.native
 
 .KEEP_STATE:
 
-install: $(ROOTONBLDMACHPROG)
+ROOTONBLDMACHSTRIP = $(ROOTONBLDBINMACH)/strip
+
+install: $(ROOTONBLDMACHPROG) $(ROOTONBLDMACHSTRIP)
+
+$(ROOTONBLDMACHSTRIP): $(ROOTONBLDMACHPROG)
+	$(RM) $@
+	$(SYMLINK) mcs $@
 
 include		$(SGSHOME)/mcs/Makefile.targ
 
