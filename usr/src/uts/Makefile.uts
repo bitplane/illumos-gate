@@ -145,7 +145,8 @@ ALWAYS_DEFS_64		= -D_KERNEL -D_SYSCALL32 -D_SYSCALL32_IMPL -D_ELF64 \
 # XX64	This should be defined by the compiler!
 #
 ALWAYS_DEFS_64		+= -Dsun -D__sun -D__SVR4
-ALWAYS_DEFS		= $(ALWAYS_DEFS_$(CLASS)) $(GNUC_CMN_ERR)
+ALWAYS_DEFS		= $(ALWAYS_DEFS_$(CLASS)) $(GNUC_CMN_ERR) \
+			$(TARGET_HOST_UNDEFS)
 
 #
 #	CPPFLAGS is deliberatly set with a "=" and not a "+=".  For the kernel
