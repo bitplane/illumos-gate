@@ -1,0 +1,38 @@
+#
+# Tools that execute on a Linux build host must use the host compiler and
+# linker.  MACH continues to describe the illumos target.
+#
+
+NATIVE_CFLAGS=		-O $($(NATIVE_MACH)_CFLAGS) $(CSTD) -U__sun \
+			-D_GNU_SOURCE
+NATIVE_ASFLAGS=	$(NATIVE_CFLAGS)
+NATIVE_CCFLAGS=	-O $($(NATIVE_MACH)_CCFLAGS)
+NATIVE_CFLAGS64=	-O $($(NATIVE_MACH64)_CFLAGS) $(CSTD) -U__sun \
+			-D_GNU_SOURCE
+NATIVE_ASFLAGS64=	$(NATIVE_CFLAGS64)
+NATIVE_CCFLAGS64=	-O $($(NATIVE_MACH64)_CCFLAGS)
+
+NATIVE_NOSTDINC=
+NATIVE_MULTIARCH.cmd=	$(NATIVE_GNUC_ROOT)/bin/gcc -print-multiarch
+NATIVE_MULTIARCH=	$(NATIVE_MULTIARCH.cmd:sh)
+NATIVE_SYSINCLUDE=	-I/usr/include/$(NATIVE_MULTIARCH)
+NATIVE_CTF_TARGET_INCLUDES=	-_gcc=-idirafter -_gcc=$(SRC) \
+				-_gcc=-idirafter -_gcc=$(SRC)/uts/common \
+				-_gcc=-idirafter -_gcc=$(SRC)/common/ctf \
+				-_gcc=-idirafter -_gcc=$(SRC)/lib/libctf/common \
+				-_gcc=-idirafter -_gcc=$(SRC)/head
+NATIVE_CTF_COMPAT=	-_gcc=-D_LARGEFILE64_SOURCE \
+			-_gcc=-DCTF_HOST_LINUX -_gcc=-include \
+			-_gcc=$(SRC)/tools/ctf/common/compat_linux.h
+NATIVE_HOST_CPPFLAGS=	-DCTF_HOST_LINUX
+NATIVE_CTF_COMPAT_INCLUDES=	-I$(SRC)/tools/ctf/common/linux
+NATIVE_THREAD_LIBS=	-lpthread
+NATIVE_AVL_LIB=
+NATIVE_ORIGIN_RPATH=	-_gcc=-Wl,-rpath,'$$ORIGIN/../../lib/$(MACH)' \
+			-_gcc=-Wl,-rpath-link,$(ROOTONBLDLIBMACH)
+NATIVE_WIDEC_OBJS=	widec.o
+NATIVE_WIDEC_INCLUDES=	-I$(SRC)/tools/compat/linux
+
+NATIVECCNEEDED=
+NATIVECCNEEDED64=
+CCVERBOSE=

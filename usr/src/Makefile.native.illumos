@@ -1,0 +1,17 @@
+#
+# Native illumos builds use the defaults established by Makefile.native.
+#
+
+NATIVE_NOSTDINC=	-_gcc=-nostdinc
+NATIVE_SYSINCLUDE=
+NATIVE_CTF_TARGET_INCLUDES=	-I$(SRC) -I$(SRC)/uts/common \
+				-I$(SRC)/common/ctf \
+				-I$(SRC)/lib/libctf/common -I$(SRC)/head
+NATIVE_CTF_COMPAT=
+NATIVE_CTF_COMPAT_INCLUDES=
+NATIVE_THREAD_LIBS=
+NATIVE_AVL_LIB=	-lavl
+NATIVE_ORIGIN_RPATH=	'-R$$ORIGIN/../../lib/$(MACH)'
+NATIVE_WIDEC_OBJS=
+NATIVE_WIDEC_INCLUDES=
+NATIVE_HOST_CPPFLAGS=

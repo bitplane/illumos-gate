@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 #include <sys/param.h>
 #include <fcntl.h>
@@ -49,7 +50,8 @@ static void usage(void);
 static void file_copy(char *src_file, char *dest_file);
 static void chown_file(const char *file, const char *group, const char *owner);
 static char *find_basename(const char *str);
-static int creatdir(char *fn);
+static int creatdir(const char *fn);
+static int mkdir_parents(const char *path, mode_t mode);
 
 
 void
@@ -141,12 +143,37 @@ find_basename(const char *str)
 	return ((char *)str);
 }
 
+static int
+mkdir_parents(const char *path, mode_t mode)
+{
+	char copy[MAXPATHLEN];
+	char *p;
+
+	if (snprintf(copy, sizeof (copy), "%s", path) >= sizeof (copy)) {
+		errno = ENAMETOOLONG;
+		return (-1);
+	}
+
+	for (p = copy + 1; *p != '\0'; p++) {
+		if (*p != '/')
+			continue;
+		*p = '\0';
+		if (mkdir(copy, mode) == -1 && errno != EEXIST)
+			return (-1);
+		*p = '/';
+	}
+
+	if (mkdir(copy, mode) == -1 && errno != EEXIST)
+		return (-1);
+	return (0);
+}
+
 int
-creatdir(char *fn) {
+creatdir(const char *fn) {
 
 	errno = 0;
 
-	if (mkdirp(fn, 0755) == -1) {
+	if (mkdir_parents(fn, 0755) == -1) {
 		if (errno != EEXIST)
 			return (errno);
 	} else if (!suppress) {
@@ -223,7 +250,12 @@ main(int argc, char **argv)
 				    ins_file, errno, strerror(errno));
 				return (rv);
 			}
-			(void) strlcpy(dest_file, ins_file, MAXPATHLEN);
+			if (snprintf(dest_file, sizeof (dest_file), "%s",
+			    ins_file) >= sizeof (dest_file)) {
+				(void) fprintf(stderr,
+				    "install: path too long: %s\n", ins_file);
+				return (1);
+			}
 
 		} else {
 			(void) strcat(strcat(strcpy(dest_file, dirb), "/"),

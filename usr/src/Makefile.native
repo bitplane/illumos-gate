@@ -51,3 +51,5 @@ LD64=	$(NATIVELD64)
 # If we're building for the build machine, we should use the build-machine
 # link-editor just in case
 CW_LINKER=
+
+include $(SRC)/Makefile.native.$(NATIVE_OS)

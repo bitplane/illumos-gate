@@ -55,9 +55,22 @@ CERRWARN +=		-_gnu=-Wno-unknown-pragmas
 CPPFLAGS=		-D_TS_ERRNO
 ELFSIGN_O=		$(TRUE)
 LDLIBS=
-LDFLAGS=		$(MAPFILE.NES:%=-Wl,-M%) $(MAPFILE.NED:%=-Wl,-M%) \
+LDFLAGS_illumos=	$(MAPFILE.NES:%=-Wl,-M%) $(MAPFILE.NED:%=-Wl,-M%) \
 			    $(MAPFILE.PGA:%=-Wl,-M%) \
 			    $(BDIRECT)
+LDFLAGS_linux=
+LDFLAGS=		$(LDFLAGS_$(NATIVE_OS))
+
+LDCHECKS_illumos=	$(ZASSERTDEFLIB) $(ZGUIDANCE) $(ZFATALWARNINGS) \
+			$(NATIVE_LIBS:%=$(ZASSERTDEFLIB)=%)
+LDCHECKS_linux=
+LDCHECKS=		$(LDCHECKS_$(NATIVE_OS))
+
+DYNFLAGS_illumos=	$(HSONAME) $(ZTEXT) $(ZDEFS) $(BDIRECT) \
+			$(MAPFILES:%=-Wl,-M%) $(MAPFILE.PGA:%=-Wl,-M%) \
+			$(MAPFILE.NED:%=-Wl,-M%) $(LDCHECKS)
+DYNFLAGS_linux=	-Wl,-soname,$(SONAME) -Wl,-z,text -Wl,-z,defs
+DYNFLAGS=		$(DYNFLAGS_$(NATIVE_OS))
 
 NATIVE_LIBS += libc.so
 
@@ -72,6 +85,8 @@ GSHARED = -_gcc=-shared
 # protector work. Disable it right now for the tools.
 #
 STACKPROTECT = none
+
+include $(SRC)/tools/Makefile.tools.$(NATIVE_OS)
 
 ROOTONBLDPROG=		$(PROG:%=$(ROOTONBLDBIN)/%)
 ROOTONBLDSCRIPTS=	$(SCRIPTS:%=$(ROOTONBLDBIN)/%)

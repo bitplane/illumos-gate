@@ -36,13 +36,24 @@ NATIVECC=	$(NATIVE_GNUC_ROOT)/bin/gcc
 CFLAGS += $(CCVERBOSE)
 
 # Override CFLAGS.  This is needed only for bootstrap of cw.
-CFLAGS=	-O -D__sun -Wall -Werror -std=gnu99 -nodefaultlibs
-LDLIBS +=	-Wl,-zassert-deflib=libc.so -lc
-LDFLAGS=	$(MAPFILE.NES:%=-Wl,-M%)
-ZASSERTDEFLIB = -Wl,-zassert-deflib
-ZFATALWARNINGS = -Wl,-zfatal-warnings
-ZGUIDANCE = -Wl,-zguidance
-LDFLAGS += -Wl,$(ZDIRECT)
+CW_CFLAGS_illumos=	-O -D__sun -Wall -Werror -std=gnu99 -nodefaultlibs
+CW_CFLAGS_linux=	-O -D_GNU_SOURCE -Wall -Werror -std=gnu99
+CFLAGS=		$(CW_CFLAGS_$(NATIVE_OS))
+
+CW_LDLIBS_illumos=	-Wl,-zassert-deflib=libc.so -lc
+CW_LDLIBS_linux=	-lc
+LDLIBS +=	$(CW_LDLIBS_$(NATIVE_OS))
+
+CW_LDFLAGS_illumos=	$(MAPFILE.NES:%=-Wl,-M%) -Wl,$(ZDIRECT)
+CW_LDFLAGS_linux=
+LDFLAGS=	$(CW_LDFLAGS_$(NATIVE_OS))
+
+ZASSERTDEFLIB_illumos = -Wl,-zassert-deflib
+ZFATALWARNINGS_illumos = -Wl,-zfatal-warnings
+ZGUIDANCE_illumos = -Wl,-zguidance
+ZASSERTDEFLIB = $(ZASSERTDEFLIB_$(NATIVE_OS))
+ZFATALWARNINGS = $(ZFATALWARNINGS_$(NATIVE_OS))
+ZGUIDANCE = $(ZGUIDANCE_$(NATIVE_OS))
 
 $(ROOTONBLDMAN1ONBLDFILES) := FILEMODE=      644
 CSTD=	$(CSTD_GNU99)

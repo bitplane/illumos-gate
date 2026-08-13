@@ -738,6 +738,7 @@ LINK64.cc=		$(CCC) $(CCFLAGS64) $(CPPFLAGS) $(NORUNPATH) \
 # environment as `uname -p` to override this macro.
 #
 # For now at least, we cross-compile amd64 on i386 machines.
+NATIVE_OS= illumos
 NATIVE_MACH=	$(MACH:amd64=i386)
 NATIVE_MACH64=	$(MACH64)
 

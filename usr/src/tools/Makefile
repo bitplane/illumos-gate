@@ -41,9 +41,11 @@ include ../Makefile.master
 # Anything built before 'install.bin' is present must override binary
 # installation rules in their makefiles. This includes the Makefile for
 # 'install.bin' itself.
+BOOT_SMATCH_illumos=	smatch .WAIT
+BOOT_SMATCH_linux=
+
 BOOT_SUBDIRS=		\
-	smatch		\
-	.WAIT		\
+	$(BOOT_SMATCH_$(NATIVE_OS)) \
 	cw		\
 	.WAIT		\
 	install.bin	\
@@ -131,6 +133,7 @@ ROOTDIRS +=							\
 
 all :=		TARGET= install
 install :=	TARGET= install
+bootstrap :=	TARGET= install
 clean :=	TARGET= clean
 clobber :=	TARGET= clobber
 _msg :=		TARGET= _msg

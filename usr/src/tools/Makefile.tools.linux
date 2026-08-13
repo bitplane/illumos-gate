@@ -1,0 +1,14 @@
+#
+# Linux host binaries are ordinary ELF programs.  Solaris mapfiles, linker
+# checks and ELF post-processing apply only to illumos output.
+#
+
+MCS=		/usr/bin/true
+STRIP_STABS=	:
+PROCESS_COMMENT=	:
+POST_PROCESS_SO=	:
+POST_PROCESS=		:
+
+# These are illumos linker features, not properties of native tools.
+BDIRECT=
+ZLAZYLOAD=
