@@ -147,6 +147,7 @@
 #include <fcntl.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
@@ -154,6 +155,7 @@
 #include <dirent.h>
 
 #include <sys/param.h>
+#include <sys/resource.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/utsname.h>
@@ -445,10 +447,8 @@ discard_file_name(cw_ictx_t *ctx, const char *path)
 	if (mktemp(tmpl) == NULL)
 		nomem();
 
-	(void) asprintf(&ret, "%s/%s%s", ctx->i_tmpdir, tmpl,
-	    (ext != NULL) ? ext : "");
-
-	if (ret == NULL)
+	if (asprintf(&ret, "%s/%s%s", ctx->i_tmpdir, tmpl,
+	    (ext != NULL) ? ext : "") < 0)
 		nomem();
 
 	return (ret);
