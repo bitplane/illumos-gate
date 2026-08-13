@@ -33,6 +33,8 @@
 #ifndef	_SGS_H
 #define	_SGS_H
 
+#include <sgs-ident.h>
+
 #ifdef	__cplusplus
 extern "C" {
 #endif
@@ -58,11 +60,6 @@ extern "C" {
 /*
  * Software identification.
  */
-#define	SGS		""
-#define	SGU_PKG		"Software Generation Utilities"
-#define	SGU_REL		"(SGU) Solaris-ELF (4.0)"
-
-
 #ifndef _ASM
 
 /*

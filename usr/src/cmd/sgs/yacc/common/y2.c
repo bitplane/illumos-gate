@@ -27,7 +27,7 @@
 /* All Rights Reserved */
 
 #include "dextern.h"
-#include "sgs.h"
+#include "sgs-ident.h"
 #include <stdio.h>
 
 #define	IDENTIFIER 257

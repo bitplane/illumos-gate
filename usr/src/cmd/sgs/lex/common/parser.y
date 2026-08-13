@@ -35,7 +35,7 @@
 #define YYSTYPE union _yystype_
 union _yystype_
 {
-	int	i;
+	intptr_t	i;
 	CHR	*cp;
 };
 int	peekon = 0; /* need this to check if "^" came in a definition section */
@@ -272,6 +272,7 @@ int
 yylex(void)
 {
 	CHR *p;
+	char *allocation;
 	int  i;
 	CHR *xp;
 	int lex_startcond_lookupval;
@@ -313,17 +314,16 @@ yylex(void)
 						sectbegin = TRUE;
 						i = treesize*(sizeof(*name)+sizeof(*left)+
 							sizeof(*right)+sizeof(*nullstr)+sizeof(*parent))+ALITTLEEXTRA;
-						c = (int)myalloc(i,1);
-						if(c == 0)
+						allocation = myalloc(i, 1);
+						if (allocation == NULL)
 							error("Too little core for parse tree");
-						p = (CHR *)c;
-						free(p);
+						free(allocation);
 						/*LINTED: E_BAD_PTR_CAST_ALIGN*/
 						name = (int *)myalloc(treesize,sizeof(*name));
 						/*LINTED: E_BAD_PTR_CAST_ALIGN*/
-						left = (int *)myalloc(treesize,sizeof(*left));
+						left = (intptr_t *)myalloc(treesize,sizeof(*left));
 						/*LINTED: E_BAD_PTR_CAST_ALIGN*/
-						right = (int *)myalloc(treesize,sizeof(*right));
+						right = (intptr_t *)myalloc(treesize,sizeof(*right));
 						nullstr = myalloc(treesize,sizeof(*nullstr));
 						/*LINTED: E_BAD_PTR_CAST_ALIGN*/
 						parent = (int *)myalloc(treesize,sizeof(*parent));
@@ -956,7 +956,7 @@ freturn(i)
 				allprint(yylval.i);
 				break;
 			default:
-				(void) printf("%d",yylval.i);
+				(void) printf("%ld", (long)yylval.i);
 				break;
 			}
 		(void) putchar('\n');

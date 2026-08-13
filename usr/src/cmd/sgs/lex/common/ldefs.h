@@ -30,11 +30,24 @@
 #define	_LDEFS_H
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include <widec.h>
 #include <wctype.h>
-#include "sgs.h"
+#include "sgs-ident.h"
+
+#define	FALSE	0
+#define	TRUE	1
+
+#ifndef __NORETURN
+#if defined(__GNUC__)
+#define	__NORETURN	__attribute__((__noreturn__))
+#else
+#define	__NORETURN
+#endif
+#endif
 
 #define	CHR wchar_t
 #define	BYTE char
@@ -189,8 +202,8 @@ extern int prev;	/* previous input character */
 extern int pres;	/* present input character */
 extern int peek;	/* next input character */
 extern int *name;
-extern int *left;
-extern int *right;
+extern intptr_t *left;
+extern intptr_t *right;
 extern int *parent;
 extern Boolean *nullstr;
 extern int tptr;
@@ -274,8 +287,8 @@ int cpyact(void);
 int lookup(CHR *s, CHR **t);
 int usescape(int c);
 int alpha(int c);
-int mn2(int a, int d, int c);
-int mn1(int a, int d);
+int mn2(int a, intptr_t d, intptr_t c);
+int mn1(int a, intptr_t d);
 int mn0(int a);
 int dupl(int n);
 

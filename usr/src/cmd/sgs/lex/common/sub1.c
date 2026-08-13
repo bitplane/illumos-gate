@@ -673,7 +673,7 @@ gch(void)
 }
 
 int
-mn2(int a, int d, int c)
+mn2(int a, intptr_t d, intptr_t c)
 {
 	if (tptr >= treesize) {
 		tptr++;
@@ -720,7 +720,7 @@ mn2(int a, int d, int c)
 }
 
 int
-mn1(int a, int d)
+mn1(int a, intptr_t d)
 {
 	if (tptr >= treesize) {
 		tptr++;
@@ -935,52 +935,56 @@ treedump(void)
 		} else
 			switch (name[t]) {
 			case RSTR:
-				(void) printf("%d ", left[t]);
+				(void) printf("%d ", (int)left[t]);
 				allprint(right[t]);
 				break;
 			case RCCL:
 				(void) printf("ccl ");
-				strpt(left[t]);
+				strpt((CHR *)left[t]);
 				break;
 			case RNCCL:
 				(void) printf("nccl ");
-				strpt(left[t]);
+				strpt((CHR *)left[t]);
 				break;
 			case DIV:
-				(void) printf("/ %d %d", left[t], right[t]);
+				(void) printf("/ %d %d", (int)left[t],
+				    (int)right[t]);
 				break;
 			case BAR:
-				(void) printf("| %d %d", left[t], right[t]);
+				(void) printf("| %d %d", (int)left[t],
+				    (int)right[t]);
 				break;
 			case RCAT:
-				(void) printf("cat %d %d", left[t], right[t]);
+				(void) printf("cat %d %d", (int)left[t],
+				    (int)right[t]);
 				break;
 			case PLUS:
-				(void) printf("+ %d", left[t]);
+				(void) printf("+ %d", (int)left[t]);
 				break;
 			case STAR:
-				(void) printf("* %d", left[t]);
+				(void) printf("* %d", (int)left[t]);
 				break;
 			case CARAT:
-				(void) printf("^ %d", left[t]);
+				(void) printf("^ %d", (int)left[t]);
 				break;
 			case QUEST:
-				(void) printf("? %d", left[t]);
+				(void) printf("? %d", (int)left[t]);
 				break;
 			case RNULLS:
 				(void) printf("nullstring");
 				break;
 			case FINAL:
-				(void) printf("final %d", left[t]);
+				(void) printf("final %d", (int)left[t]);
 				break;
 			case S1FINAL:
-				(void) printf("s1final %d", left[t]);
+				(void) printf("s1final %d", (int)left[t]);
 				break;
 			case S2FINAL:
-				(void) printf("s2final %d", left[t]);
+				(void) printf("s2final %d", (int)left[t]);
 				break;
 			case RNEWE:
-				(void) printf("new %d %d", left[t], right[t]);
+				(void) printf("new %d %d", (int)left[t],
+				    (int)right[t]);
 				break;
 
 			/* XCU4: add RXSCON */
@@ -989,21 +993,22 @@ treedump(void)
 				(void) printf("exstart %s", sname[*p++-1]);
 				while (*p)
 					(void) printf(", %ws", sname[*p++-1]);
-				(void) printf(" %d", left[t]);
+				(void) printf(" %d", (int)left[t]);
 				break;
 			case RSCON:
 				p = (CHR *)right[t];
 				(void) printf("start %s", sname[*p++-1]);
 				while (*p)
 					(void) printf(", %ws", sname[*p++-1]);
-				(void) printf(" %d", left[t]);
+				(void) printf(" %d", (int)left[t]);
 				break;
 			case DOT:
 				printf("dot");
 				break;
 			default:
 				(void) printf(
-				"unknown %d %d %d", name[t], left[t], right[t]);
+				"unknown %d %d %d", name[t], (int)left[t],
+				(int)right[t]);
 				break;
 			}
 		if (nullstr[t])

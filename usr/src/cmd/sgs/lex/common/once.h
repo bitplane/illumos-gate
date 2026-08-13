@@ -63,7 +63,7 @@ int	ctable[2*NCH] = {
 };
 
 int	ZCH = NCH;
-FILE	*fout = NULL, *errorf = {stderr};
+FILE	*fout = NULL, *errorf = NULL;
 int	sect = DEFSECTION;
 int	prev = '\n';	/* previous input character */
 int	pres = '\n';	/* present input character */
@@ -107,8 +107,8 @@ int chset;	/* 1 = char set modified */
 FILE *fin, *fother;
 int fptr;
 int *name;
-int *left;
-int *right;
+intptr_t *left;
+intptr_t *right;
 int *parent;
 Boolean *nullstr;
 int tptr;

@@ -18,11 +18,12 @@ PROG =		lex
 SGSDIR =	../../cmd/sgs
 SRCDIR =	$(SGSDIR)/lex/common
 
-OBJS =		main.o sub1.o sub2.o sub3.o header.o parser.o
+OBJS =		main.o sub1.o sub2.o sub3.o header.o parser.o \
+		$(NATIVE_WIDEC_OBJS)
 
 include ../Makefile.tools
 
-CPPFLAGS =	-I$(SGSDIR)/include
+CPPFLAGS =	-I$(SGSDIR)/include $(NATIVE_WIDEC_INCLUDES)
 CSTD=		$(CSTD_GNU99)
 
 # unused labels in yaccpar
@@ -41,6 +42,9 @@ $(PROG):	$(OBJS)
 
 %.o:	$(SRCDIR)/%.c
 	$(COMPILE.c) -o $@ $<
+
+widec.o:	$(SRC)/tools/compat/linux/widec.c
+	$(COMPILE.c) -o $@ $(SRC)/tools/compat/linux/widec.c
 
 install: all $(ROOTONBLDMACHPROG) $(ROOTFORMS)
 

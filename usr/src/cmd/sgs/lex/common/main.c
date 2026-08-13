@@ -34,9 +34,10 @@
 
 #include <string.h>
 #include "once.h"
-#include "sgs.h"
+#include "sgs-ident.h"
 #include <locale.h>
 #include <limits.h>
+#include <unistd.h>
 
 static wchar_t  L_INITIAL[] = {'I', 'N', 'I', 'T', 'I', 'A', 'L', 0};
 static void get1core(void);
@@ -74,6 +75,8 @@ main(int argc, char **argv)
 	char *apath = NULL;
 	char *ypath;
 	Boolean eoption = 0, woption = 0;
+
+	errorf = stderr;
 
 	sargv = argv;
 	sargc = argc;

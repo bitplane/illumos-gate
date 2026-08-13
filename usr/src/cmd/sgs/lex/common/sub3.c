@@ -256,13 +256,13 @@ repbycgid(void)
 			}
 #endif
 		} else if (c == RSTR) {
-			c = right[i];
+			c = (int)right[i];
 			right[i] = yycgid((wchar_t)c);
 #ifdef DEBUG
 			if (debug) {
 				printf(
 				    "name[%d].right:'%c'->%d;\n",
-				    i, c, right[i]);
+				    i, c, (int)right[i]);
 			}
 #endif
 		} else if ((c == RCCL) || (c == RNCCL)) {
@@ -293,7 +293,7 @@ repbycgid(void)
 #ifdef DEBUG
 			if (debug) {
 				printf("name[%d]:R[N]CCL of \"", i);
-				strpt(left[i]);
+				strpt((CHR *)left[i]);
 				printf(" -> {");
 			}
 #endif
@@ -340,9 +340,9 @@ repbycgid(void)
 			while (ccp < ccptr && scomp(ccltoken, ccp) != 0)
 				ccp++;
 			if (ccp < ccptr) {  /* character class found in ccl */
-				left[i] = (int)ccp;
+				left[i] = (intptr_t)ccp;
 			} else { /* not in ccl, add it */
-				left[i] = (int)ccptr;
+				left[i] = (intptr_t)ccptr;
 				scopy(ccltoken, ccptr);
 				ccptr += slength(ccltoken) + 1;
 				if (ccptr > ccl + CCLSIZE)
@@ -374,7 +374,7 @@ repbycgid(void)
 			}
 			/* Mimic mn1(RCCL,psave)... */
 			name[i] = RCCL;
-			left[i] = (int)psave;
+			left[i] = (intptr_t)psave;
 			cclinter(1);
 		}
 	}

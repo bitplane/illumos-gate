@@ -18,13 +18,14 @@ PROG =		yacc
 SGSDIR =	../../cmd/sgs
 SRCDIR =	$(SGSDIR)/yacc/common
 
-OBJS =		y1.o y2.o y3.o y4.o
+OBJS =		y1.o y2.o y3.o y4.o $(NATIVE_WIDEC_OBJS)
 
 YACCPAR =	yaccpar
 
 include ../Makefile.tools
 
-CPPFLAGS =	-I$(SGSDIR)/include
+CPPFLAGS =	-I$(SGSDIR)/include \
+		$(NATIVE_WIDEC_INCLUDES)
 CSTD =		$(CSTD_GNU99)
 
 ROOTYACCPAR =	$(YACCPAR:%=$(ROOTONBLDSHLIBCCS)/%)
@@ -39,6 +40,9 @@ $(PROG):	$(OBJS)
 
 %.o:	$(SRCDIR)/%.c
 	$(COMPILE.c) -o $@ $<
+
+widec.o:	$(SRC)/tools/compat/linux/widec.c
+	$(COMPILE.c) -o $@ $(SRC)/tools/compat/linux/widec.c
 
 install: all $(ROOTONBLDMACHPROG) $(ROOTYACCPAR)
 
