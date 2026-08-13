@@ -56,7 +56,7 @@ static void pprogramdef(definition *);
 static void parglist(proc_list *, char *);
 static void penumdef(definition *);
 static void ptypedef(definition *);
-static uint_t undefined2(char *, char *);
+static unsigned int undefined2(char *, char *);
 
 enum rpc_gvc {
 	PROGRAM,
@@ -243,7 +243,7 @@ puldefine(char *name, char *num, enum rpc_gvc which)
 	}
 }
 
-static uint_t
+static unsigned int
 define_printed(proc_list *stop, version_list *start)
 {
 	version_list *vers;
@@ -535,7 +535,7 @@ pdeclaration(char *name, declaration *dec, int tab, char *separator)
 	f_print(fout, separator);
 }
 
-static uint_t
+static unsigned int
 undefined2(char *type, char *stop)
 {
 	list *l;

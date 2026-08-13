@@ -72,7 +72,7 @@ static void s_output(int, char *[], char *, char *, int, char *, int, int);
 static void l_output(char *, char *, int, char *);
 static void t_output(char *, char *, int, char *);
 static int do_registers(int, char *[]);
-static uint_t parseargs(int, char *[], struct commandline *);
+static unsigned int parseargs(int, char *[], struct commandline *);
 static void usage(void);
 static void version_info(void);
 static void options_usage(void);
@@ -326,6 +326,10 @@ open_input(char *infile, char *define)
 		find_cpp();
 		putarg(0, CPP);
 		putarg(1, CPPFLAGS);
+#if defined(__linux__)
+		/* Preserve C preprocessor tests embedded in literal output. */
+		addarg("-U__STDC__");
+#endif
 		addarg(define);
 		if (infile)
 			addarg(infile);
@@ -1030,7 +1034,7 @@ checkfiles(char *infile, char *outfile)
 /*
  * Parse command line arguments
  */
-static uint_t
+static unsigned int
 parseargs(int argc, char *argv[], struct commandline *cmd)
 {
 	int i;
