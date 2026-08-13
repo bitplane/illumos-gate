@@ -38,6 +38,8 @@ NATIVE_THREAD_LIBS=	-lpthread
 NATIVE_AVL_LIB=
 NATIVE_ORIGIN_RPATH=	-_gcc=-Wl,-rpath,'$$ORIGIN/../../lib/$(MACH)' \
 			-_gcc=-Wl,-rpath-link,$(ROOTONBLDLIBMACH)
+NATIVE_CTF_BIN_RPATH=	-_gcc=-Wl,-rpath,'$$ORIGIN/../../lib/$(MACH)/elfutils'
+NATIVE_CTF_LIB_RPATH=	-_gcc=-Wl,-rpath,'$$ORIGIN/elfutils'
 NATIVE_WIDEC_OBJS=	widec.o
 NATIVE_WIDEC_INCLUDES=	-I$(SRC)/tools/compat/linux
 

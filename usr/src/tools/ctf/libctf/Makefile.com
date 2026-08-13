@@ -27,7 +27,7 @@ CPPFLAGS +=	-I$(SRC)/lib/libctf/common/ \
 LDLIBS += -lc -lelf -L$(ROOTONBLDLIBMACH) -ldwarf $(NATIVE_AVL_LIB) \
 	$(NATIVE_THREAD_LIBS)
 NATIVE_LIBS += libelf.so libc.so
-DYNFLAGS += $(NATIVE_ORIGIN_RPATH)
+DYNFLAGS += $(NATIVE_CTF_LIB_RPATH) $(NATIVE_ORIGIN_RPATH)
 
 # As a bootstrapping issue, we can't use the real mapfile because we build
 # early in tools and thus don't have support for assertions.

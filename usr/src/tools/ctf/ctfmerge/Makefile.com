@@ -19,6 +19,7 @@ LDLIBS += -lctf -lelf
 
 LDFLAGS += \
 	-L$(ROOTONBLDLIBMACH) \
+	$(NATIVE_CTF_BIN_RPATH) \
 	$(NATIVE_ORIGIN_RPATH) \
 
 NATIVE_LIBS += libelf.so

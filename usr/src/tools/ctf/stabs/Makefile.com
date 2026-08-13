@@ -38,7 +38,7 @@ SRCS = \
 include ../../Makefile.ctf
 
 LDLIBS += -L$(ROOTONBLDLIBMACH) -lctf
-LDFLAGS += $(NATIVE_ORIGIN_RPATH)
+LDFLAGS += $(NATIVE_CTF_BIN_RPATH) $(NATIVE_ORIGIN_RPATH)
 NATIVE_LIBS += libctf.so
 
 OBJS = $(SRCS:%.c=%.o) list.o

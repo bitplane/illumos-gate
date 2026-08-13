@@ -22,6 +22,7 @@ NATIVE_LIBS += libctf.so libc.so
 
 LDFLAGS = \
 	-L$(ROOTONBLDLIBMACH) \
+	$(NATIVE_CTF_BIN_RPATH) \
 	$(NATIVE_ORIGIN_RPATH) \
 	$(BDIRECT)
 
