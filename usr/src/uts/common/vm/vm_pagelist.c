@@ -72,11 +72,11 @@ extern uint_t	vac_colors;
 /* vm_cpu_data0 for the boot cpu before kmem is initialized */
 
 #if L2CACHE_ALIGN_MAX <= MAX_PRAGMA_ALIGN
-#pragma align	L2CACHE_ALIGN_MAX(vm_cpu_data0)
+#define	VM_CPU_DATA_ALIGN	L2CACHE_ALIGN_MAX
 #else
-#pragma align	MAX_PRAGMA_ALIGN(vm_cpu_data0)
+#define	VM_CPU_DATA_ALIGN	MAX_PRAGMA_ALIGN
 #endif
-char		vm_cpu_data0[VM_CPU_DATA_PADSIZE];
+char		vm_cpu_data0[VM_CPU_DATA_PADSIZE] __aligned(VM_CPU_DATA_ALIGN);
 
 /*
  * number of page colors equivalent to reqested color in page_get routines.
