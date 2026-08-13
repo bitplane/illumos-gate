@@ -19,9 +19,13 @@ CMDDIR=		$(SRC)/cmd/vtfontcvt
 include		../Makefile.tools
 include		$(CMDDIR)/Makefile.common
 
-NATIVE_LIBS	+= libumem.so
+VTFONTCVT_NATIVE_LIBS_illumos = libumem.so
+NATIVE_LIBS	+= $(VTFONTCVT_NATIVE_LIBS_$(NATIVE_OS))
 CPPFLAGS	+= -I$(LZ4)
-CPPFLAGS	+= -I../../uts/common
+CPPFLAGS_illumos = -I../../uts/common
+CPPFLAGS_linux = -Ilinux -_gcc=-idirafter -_gcc=../../uts/common \
+	-_gcc=-include -_gcc=../../uts/common/sys/ccompile.h
+CPPFLAGS	+= $(CPPFLAGS_$(NATIVE_OS))
 .KEEP_STATE:
 
 all:		$(PROG)

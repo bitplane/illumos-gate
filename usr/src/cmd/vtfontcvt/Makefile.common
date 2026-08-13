@@ -25,7 +25,8 @@ CPPFLAGS.first +=	-I$(LZ4)
 LZ4_OBJS=	lz4.o
 OBJS	+=	$(LZ4_OBJS)
 
-LDLIBS += -lumem
+VTFONTCVT_LDLIBS_illumos = -lumem
+LDLIBS += $(VTFONTCVT_LDLIBS_$(NATIVE_OS))
 
 %.o:	$(LZ4)/%.c
 	$(COMPILE.c) $<
