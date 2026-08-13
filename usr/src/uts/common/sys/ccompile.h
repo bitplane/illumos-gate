@@ -66,7 +66,10 @@ extern "C" {
 /*
  * Handle the kernel printf routines that can take '%b' too
  */
-#if __GNUC_VERSION < 30402 || !defined(__GNUC_CMN_ERR)
+#if defined(__NO_GNUC_CMN_ERR)
+#define	__sun_attr___KPRINTFLIKE__(__n)
+#define	__sun_attr___KVPRINTFLIKE__(__n)
+#elif __GNUC_VERSION < 30402 || !defined(__GNUC_CMN_ERR)
 /*
  * XX64 at least this doesn't work correctly yet with 3.4.1 anyway!
  */
