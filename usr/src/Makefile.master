@@ -771,8 +771,14 @@ NATIVE_MACH64=	$(MACH64)
 # environment.
 GNU_ROOT=		/usr
 
-PRIMARY_CC=	gcc10,$(GNUC_ROOT)/bin/gcc,gnu
-PRIMARY_CCC=	gcc10,$(GNUC_ROOT)/bin/g++,gnu
+GCC_MAJOR.cmd=	$(GNUC_ROOT)/bin/gcc -dumpfullversion | $(CUT) -d. -f1
+GCC_MAJOR=	$(GCC_MAJOR.cmd:sh)
+PRIMARY_CC_illumos=	gcc10,$(GNUC_ROOT)/bin/gcc,gnu
+PRIMARY_CC_linux=	gcc$(GCC_MAJOR),$(GNUC_ROOT)/bin/gcc,gnu
+PRIMARY_CC=	$(PRIMARY_CC_$(NATIVE_OS))
+PRIMARY_CCC_illumos=	gcc10,$(GNUC_ROOT)/bin/g++,gnu
+PRIMARY_CCC_linux=	gcc$(GCC_MAJOR),$(GNUC_ROOT)/bin/g++,gnu
+PRIMARY_CCC=	$(PRIMARY_CCC_$(NATIVE_OS))
 
 CW_CC_COMPILERS=	$(PRIMARY_CC:%=--primary %) $(SHADOW_CCS:%=--shadow %)
 CW_CCC_COMPILERS=	$(PRIMARY_CCC:%=--primary %) $(SHADOW_CCCS:%=--shadow %)
