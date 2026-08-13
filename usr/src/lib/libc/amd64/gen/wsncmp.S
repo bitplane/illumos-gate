@@ -38,46 +38,46 @@
 	ANSI_PRAGMA_WEAK(wsncmp,function)
 
 	ENTRY(wcsncmp)		/* (wchar *ws1, wchar_t *ws2, size_t n) */
-	cmpq	%rdi,%rsi	/ same string?
+	cmpq	%rdi,%rsi	/* same string? */
 	je	.equal
-	incq	%rdx		/ will later predecrement this uint
+	incq	%rdx		/* will later predecrement this uint */
 .loop:
 	decq	%rdx
-	je	.equal		/ Used all n chars?
-	movl	(%rdi),%eax	/ slodb ; scab
+	je	.equal		/* Used all n chars? */
+	movl	(%rdi),%eax	/* slodb ; scab */
 	cmpl	(%rsi),%eax
-	jne	.notequal_0	/ Are the bytes equal?
+	jne	.notequal_0	/* Are the bytes equal? */
 	testl	%eax,%eax
-	je	.equal		/ End of string?
+	je	.equal		/* End of string? */
 
 	decq	%rdx
-	je	.equal		/ Used all n chars?
-	movl	4(%rdi),%eax	/ slodb ; scab
+	je	.equal		/* Used all n chars? */
+	movl	4(%rdi),%eax	/* slodb ; scab */
 	cmpl	4(%rsi),%eax
-	jne	.notequal_1	/ Are the bytes equal?
+	jne	.notequal_1	/* Are the bytes equal? */
 	testl	%eax,%eax
-	je	.equal		/ End of string?
+	je	.equal		/* End of string? */
 
 	decq	%rdx
-	je	.equal		/ Used all n chars?
-	movl	8(%rdi),%eax	/ slodb ; scab
+	je	.equal		/* Used all n chars? */
+	movl	8(%rdi),%eax	/* slodb ; scab */
 	cmpl	8(%rsi),%eax
-	jne	.notequal_2	/ Are the bytes equal?
+	jne	.notequal_2	/* Are the bytes equal? */
 	testl	%eax,%eax
-	je	.equal		/ End of string?
+	je	.equal		/* End of string? */
 
 	decq	%rdx
-	je	.equal		/ Used all n chars?
-	movl	12(%rdi),%eax	/ slodb ; scab
+	je	.equal		/* Used all n chars? */
+	movl	12(%rdi),%eax	/* slodb ; scab */
 	cmpl	12(%rsi),%eax
-	jne	.notequal_3	/ Are the bytes equal?
+	jne	.notequal_3	/* Are the bytes equal? */
 	addq	$16,%rdi
 	addq	$16,%rsi
 	testl	%eax,%eax
-	jne	.loop		/ End of string?
+	jne	.loop		/* End of string? */
 
 .equal:
-	xorl	%eax,%eax	/ return 0
+	xorl	%eax,%eax	/* return 0 */
 	ret
 
 	.align	4
@@ -88,10 +88,10 @@
 .notequal_1:
 	addq	$4,%rsi
 .notequal_0:
-	subl	(%rsi),%eax	/ return value is (*s1 - *--s2)
+	subl	(%rsi),%eax	/* return value is (*s1 - *--s2) */
 	ret
 	SET_SIZE(wcsncmp)
 
 	ENTRY(wsncmp)
-	jmp	wcsncmp		/ tail call into wcsncmp
+	jmp	wcsncmp		/* tail call into wcsncmp */
 	SET_SIZE(wsncmp)

@@ -78,7 +78,7 @@ __div_set(double x, double y, int *pe) {
 	double z;
 
 	_putmxcsr(CSR_DEFAULT);
-	z = x / y;
+	z = x /* y; */
 	_getmxcsr(&csr);
 	if ((csr & 0x3f) == 0) {
 		*pe = 0;

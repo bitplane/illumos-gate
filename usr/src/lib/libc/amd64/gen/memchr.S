@@ -56,64 +56,64 @@
 	.align	4
 
 	ENTRY(memchr) /* (void *s, uchar_t c, size_t n) */
-	movl	%esi, %eax	/ move "c" to %eax
-	cmpq	$4, %rdx	/ if number of bytes < 4
-	jb	.L1		/ goto .L1
-	testq	$3, %rdi	/ if %rdi not word aligned
-	jnz	.L2		/ goto .L2
+	movl	%esi, %eax	/* move "c" to %eax */
+	cmpq	$4, %rdx	/* if number of bytes < 4 */
+	jb	.L1		/* goto .L1 */
+	testq	$3, %rdi	/* if %rdi not word aligned */
+	jnz	.L2		/* goto .L2 */
 	.align	4
 .L3:
-	movl	(%rdi), %ecx	/ move 1 word from (%rdi) to %ecx
-	cmpb	%cl, %al	/ if the first byte is %al
-	je	.L4		/ goto .L4 (found)
-	cmpb	%ch, %al	/ if the second byte is %al
-	je	.L5		/ goto .L5 (found)
-	shrl	$16, %ecx	/ right shift 16-bit
-	cmpb	%cl, %al	/ if the third byte is %al
-	je	.L6		/ goto .L6 (found)
-	cmpb	%ch, %al	/ if the fourth is %al
-	je	.L7		/ goto .L7 (found)
-	subq	$4, %rdx	/ decrement number of bytes by 4
-	addq	$4, %rdi	/ next word
-	cmpq	$4, %rdx	/ if number of bytes >= 4
-	jae	.L3		/ goto .L3
+	movl	(%rdi), %ecx	/* move 1 word from (%rdi) to %ecx */
+	cmpb	%cl, %al	/* if the first byte is %al */
+	je	.L4		/* goto .L4 (found) */
+	cmpb	%ch, %al	/* if the second byte is %al */
+	je	.L5		/* goto .L5 (found) */
+	shrl	$16, %ecx	/* right shift 16-bit */
+	cmpb	%cl, %al	/* if the third byte is %al */
+	je	.L6		/* goto .L6 (found) */
+	cmpb	%ch, %al	/* if the fourth is %al */
+	je	.L7		/* goto .L7 (found) */
+	subq	$4, %rdx	/* decrement number of bytes by 4 */
+	addq	$4, %rdi	/* next word */
+	cmpq	$4, %rdx	/* if number of bytes >= 4 */
+	jae	.L3		/* goto .L3 */
 .L1:
-	cmpq	$0, %rdx	/ if number of bytes == 0
-	jz	.L8		/ goto .L8 (not found)
-	cmpb	(%rdi), %al	/ if a byte in (%rdi) is %al
-	je	.L4		/ goto .L4 (found)
-	decq	%rdx		/ decrement number of bytes by 1
-	incq	%rdi		/ next byte
-	jmp	.L1		/ goto .L1
+	cmpq	$0, %rdx	/* if number of bytes == 0 */
+	jz	.L8		/* goto .L8 (not found) */
+	cmpb	(%rdi), %al	/* if a byte in (%rdi) is %al */
+	je	.L4		/* goto .L4 (found) */
+	decq	%rdx		/* decrement number of bytes by 1 */
+	incq	%rdi		/* next byte */
+	jmp	.L1		/* goto .L1 */
 	.align	4
 .L8:
-	xorl	%eax, %eax	/ not found
-	ret			/ return (0)
+	xorl	%eax, %eax	/* not found */
+	ret			/* return (0) */
 	.align	4
 .L2:
-	cmpq	$0, %rdx	/ if number of bytes == 0
-	jz	.L8		/ goto .L8 (not found)
-	cmpb	(%rdi), %al	/ if a byte in (%rdi) is %al
-	je	.L4		/ goto .L4 (found)
-	incq	%rdi		/ next byte
-	decq	%rdx		/ decrement number of bytes by 1
-	testq	$3, %rdi	/ if %rdi not word aligned
-	jnz	.L2		/ goto .L2
-	cmpq	$4, %rdx	/ if number of bytes >= 4
-	jae	.L3		/ goto .L3 (word aligned)
-	jmp	.L1		/ goto .L1
+	cmpq	$0, %rdx	/* if number of bytes == 0 */
+	jz	.L8		/* goto .L8 (not found) */
+	cmpb	(%rdi), %al	/* if a byte in (%rdi) is %al */
+	je	.L4		/* goto .L4 (found) */
+	incq	%rdi		/* next byte */
+	decq	%rdx		/* decrement number of bytes by 1 */
+	testq	$3, %rdi	/* if %rdi not word aligned */
+	jnz	.L2		/* goto .L2 */
+	cmpq	$4, %rdx	/* if number of bytes >= 4 */
+	jae	.L3		/* goto .L3 (word aligned) */
+	jmp	.L1		/* goto .L1 */
 	.align	4
 .L7:
-	/ found at the fourth byte
+	/* found at the fourth byte */
 	incq	%rdi
 .L6:
-	/ found at the third byte
+	/* found at the third byte */
 	incq	%rdi
 .L5:
-	/ found at the second byte
+	/* found at the second byte */
 	incq	%rdi
 .L4:
-	/ found at the first byte
+	/* found at the first byte */
 	movq	%rdi,%rax
 	ret
 	SET_SIZE(memchr)

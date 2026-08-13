@@ -37,38 +37,38 @@
 	ANSI_PRAGMA_WEAK(wcschr,function)
 	ANSI_PRAGMA_WEAK(wschr,function)
 
-	.align	8		/ accounts for .loop alignment and prolog
+	.align	8		/* accounts for .loop alignment and prolog */
 
 	ENTRY(wcschr)		/* (wchar_t *s, wchar_t wc) */
 	movq	%rdi,%rax
 .loop:
-	movl	(%rax),%edx	/ %edx = wchar of string
-	cmpl	%esi,%edx	/ find it?
-	je	.found		/ yes
-	testl	%edx,%edx	/ is it null?
+	movl	(%rax),%edx	/* %edx = wchar of string */
+	cmpl	%esi,%edx	/* find it? */
+	je	.found		/* yes */
+	testl	%edx,%edx	/* is it null? */
 	je	.notfound
 
-	movl	4(%rax),%edx	/ %edx = wchar of string
-	cmpl	%esi,%edx	/ find it?
-	je	.found1		/ yes
-	testl	%edx,%edx	/ is it null?
+	movl	4(%rax),%edx	/* %edx = wchar of string */
+	cmpl	%esi,%edx	/* find it? */
+	je	.found1		/* yes */
+	testl	%edx,%edx	/* is it null? */
 	je	.notfound
 
-	movl	8(%rax),%edx	/ %edx = wchar of string
-	cmpl	%esi,%edx	/ find it?
-	je	.found2		/ yes
-	testl	%edx,%edx	/ is it null?
+	movl	8(%rax),%edx	/* %edx = wchar of string */
+	cmpl	%esi,%edx	/* find it? */
+	je	.found2		/* yes */
+	testl	%edx,%edx	/* is it null? */
 	je	.notfound
 
-	movl	12(%rax),%edx	/ %edx = wchar of string
-	cmpl	%esi,%edx	/ find it?
-	je	.found3		/ yes
+	movl	12(%rax),%edx	/* %edx = wchar of string */
+	cmpl	%esi,%edx	/* find it? */
+	je	.found3		/* yes */
 	addq	$16,%rax
-	testl	%edx,%edx	/ is it null?
+	testl	%edx,%edx	/* is it null? */
 	jne	.loop
 
 .notfound:
-	xorl	%eax,%eax	/ %rax = NULL
+	xorl	%eax,%eax	/* %rax = NULL */
 	ret
 
 .found3:
@@ -84,5 +84,5 @@
 	SET_SIZE(wcschr)
 
 	ENTRY(wschr)
-	jmp	wcschr		/ tail call into wcschr
+	jmp	wcschr		/* tail call into wcschr */
 	SET_SIZE(wschr)

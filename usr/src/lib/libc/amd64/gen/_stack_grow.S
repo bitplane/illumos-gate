@@ -60,16 +60,12 @@
 	jae	1f
 	ret
 1:
-	/
-	/ If the stack size is 0, stack checking is disabled.
-	/
+	/* If the stack size is 0, stack checking is disabled. */
 	cmpq	$0, %rdx
 	jne	2f
 	ret
 2:
-	/
-	/ Move the stack pointer outside the stack bounds if it isn't already.
-	/
+	/* Move the stack pointer outside the stack bounds if it isn't already. */
 	movq	%rsp, %rbx
 	subq	%rcx, %rbx
 	cmpq	%rdx, %rbx
@@ -79,21 +75,15 @@
 	movq	%rcx, %rsp
 	subq	$STACK_ALIGN, %rsp
 3:
-	/
-	/ Dereference an address in the guard page.
-	/
+	/* Dereference an address in the guard page. */
 	movb	-1(%rcx), %bl
 
-	/
-	/ If the above load doesn't raise a SIGSEGV then do it ourselves.
-	/
+	/* If the above load doesn't raise a SIGSEGV then do it ourselves. */
 	SYSTRAP_RVAL1(lwp_self)
 	movl	$SIGSEGV, %esi
 	movl	%eax, %edi
 	SYSTRAP_RVAL1(lwp_kill)
 
-	/
-	/ Try one last time to take out the process.
-	/
+	/* Try one last time to take out the process. */
 	movq	0x0, %rax
 	SET_SIZE(_stack_grow)

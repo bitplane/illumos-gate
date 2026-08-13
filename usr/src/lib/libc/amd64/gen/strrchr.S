@@ -51,59 +51,59 @@
 #include "SYS.h"
 
 	ENTRY(strrchr)		/* (char *s, int c) */
-	movl	$0, %eax	/ %rax = NULL (current occurrence)
-	movl	%esi, %ecx	/ %cl == char to search for
-	testq	$3, %rdi	/ if %rdi not word aligned
-	jnz	.L1		/ goto .L1
+	movl	$0, %eax	/* %rax = NULL (current occurrence) */
+	movl	%esi, %ecx	/* %cl == char to search for */
+	testq	$3, %rdi	/* if %rdi not word aligned */
+	jnz	.L1		/* goto .L1 */
 	.align	4
 .L3:
-	movl	(%rdi), %edx	/ move 1 word from (%rdi) to %edx
-	cmpb	%cl, %dl	/ if the fist byte is not %cl
-	jne	.L4		/ goto .L4
-	movq	%rdi, %rax	/ save this address to %rax
+	movl	(%rdi), %edx	/* move 1 word from (%rdi) to %edx */
+	cmpb	%cl, %dl	/* if the fist byte is not %cl */
+	jne	.L4		/* goto .L4 */
+	movq	%rdi, %rax	/* save this address to %rax */
 .L4:
-	cmpb	$0, %dl		/ if a null termination
-	je	.L8		/ goto .L8
+	cmpb	$0, %dl		/* if a null termination */
+	je	.L8		/* goto .L8 */
 
-	cmpb	%cl, %dh	/ if the second byte is not %cl
-	jne	.L5		/ goto .L5
-	leaq	1(%rdi), %rax	/ save this address to %rax
+	cmpb	%cl, %dh	/* if the second byte is not %cl */
+	jne	.L5		/* goto .L5 */
+	leaq	1(%rdi), %rax	/* save this address to %rax */
 .L5:
-	cmpb	$0, %dh		/ if a null termination
-	je	.L8		/ goto .L8
+	cmpb	$0, %dh		/* if a null termination */
+	je	.L8		/* goto .L8 */
 
-	shrl	$16, %edx	/ right shift 16-bit
-	cmpb	%cl, %dl	/ if the third byte is not %cl
-	jne	.L6		/ goto .L6
-	leaq	2(%rdi), %rax	/ save this address to %rax
+	shrl	$16, %edx	/* right shift 16-bit */
+	cmpb	%cl, %dl	/* if the third byte is not %cl */
+	jne	.L6		/* goto .L6 */
+	leaq	2(%rdi), %rax	/* save this address to %rax */
 .L6:
-	cmpb	$0, %dl		/ if a null termination
-	je	.L8		/ goto .L8
+	cmpb	$0, %dl		/* if a null termination */
+	je	.L8		/* goto .L8 */
 
-	cmpb	%cl, %dh	/ if the fourth byte is not %cl
-	jne	.L7		/ goto .L7
-	leaq	3(%rdi), %rax	/ save this address to %rax
+	cmpb	%cl, %dh	/* if the fourth byte is not %cl */
+	jne	.L7		/* goto .L7 */
+	leaq	3(%rdi), %rax	/* save this address to %rax */
 .L7:
-	cmpb	$0, %dh		/ if a null termination
-	je	.L8		/ goto .L8
+	cmpb	$0, %dh		/* if a null termination */
+	je	.L8		/* goto .L8 */
 
-	addq	$4, %rdi	/ next word
-	jmp	.L3		/ goto .L3
+	addq	$4, %rdi	/* next word */
+	jmp	.L3		/* goto .L3 */
 	.align	4
 .L1:
-	movb	(%rdi), %dl	/ move 1 byte from (%rdi) to %dl
-	cmpb	%cl, %dl	/ if %dl is not %cl
-	jne	.L2		/ goto .L2
-	movq	%rdi, %rax	/ save this address to %rax
+	movb	(%rdi), %dl	/* move 1 byte from (%rdi) to %dl */
+	cmpb	%cl, %dl	/* if %dl is not %cl */
+	jne	.L2		/* goto .L2 */
+	movq	%rdi, %rax	/* save this address to %rax */
 .L2:
-	cmpb	$0, %dl		/ if a null termination
-	je	.L8		/ goto .L8
+	cmpb	$0, %dl		/* if a null termination */
+	je	.L8		/* goto .L8 */
 
-	incq	%rdi		/ next byte
-	testq	$3, %rdi	/ if %rdi not word aligned
-	jnz	.L1		/ goto .L1
-	jmp	.L3		/ goto .L3 (word aligned)
+	incq	%rdi		/* next byte */
+	testq	$3, %rdi	/* if %rdi not word aligned */
+	jnz	.L1		/* goto .L1 */
+	jmp	.L3		/* goto .L3 (word aligned) */
 	.align	4
 .L8:
-	ret			/ %rax points to the last occurrence or NULL
+	ret			/* %rax points to the last occurrence or NULL */
 	SET_SIZE(strrchr)

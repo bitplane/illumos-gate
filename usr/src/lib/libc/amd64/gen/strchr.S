@@ -29,33 +29,33 @@
 
 	ENTRY(strchr)		/* (char *, char) */
 .loop:
-	movb	(%rdi),%dl	/ %dl = byte of string
-	cmpb	%sil,%dl	/ find it?
-	je	.found		/ yes
-	testb	%dl,%dl		/ is it null?
+	movb	(%rdi),%dl	/* %dl = byte of string */
+	cmpb	%sil,%dl	/* find it? */
+	je	.found		/* yes */
+	testb	%dl,%dl		/* is it null? */
 	je	.notfound
 
-	movb	1(%rdi),%dl	/ %dl = byte of string
-	cmpb	%sil,%dl	/ find it?
-	je	.found1		/ yes
-	testb	%dl,%dl		/ is it null?
+	movb	1(%rdi),%dl	/* %dl = byte of string */
+	cmpb	%sil,%dl	/* find it? */
+	je	.found1		/* yes */
+	testb	%dl,%dl		/* is it null? */
 	je	.notfound
 
-	movb	2(%rdi),%dl	/ %dl = byte of string
-	cmpb	%sil,%dl	/ find it?
-	je	.found2		/ yes
-	testb	%dl,%dl		/ is it null?
+	movb	2(%rdi),%dl	/* %dl = byte of string */
+	cmpb	%sil,%dl	/* find it? */
+	je	.found2		/* yes */
+	testb	%dl,%dl		/* is it null? */
 	je	.notfound
 
-	movb	3(%rdi),%dl	/ %dl = byte of string
-	cmpb	%sil,%dl	/ find it?
-	je	.found3		/ yes
+	movb	3(%rdi),%dl	/* %dl = byte of string */
+	cmpb	%sil,%dl	/* find it? */
+	je	.found3		/* yes */
 	addq	$4,%rdi
-	testb	%dl,%dl		/ is it null?
+	testb	%dl,%dl		/* is it null? */
 	jne	.loop
 
 .notfound:
-	xorl	%eax,%eax	/ %rax = NULL
+	xorl	%eax,%eax	/* %rax = NULL */
 	ret
 
 .found3:

@@ -79,5 +79,5 @@
 	SET_SIZE(wcslen)
 
 	ENTRY(wslen)
-	jmp	wcslen		/ tail call into wcslen
+	jmp	wcslen		/* tail call into wcslen */
 	SET_SIZE(wslen)

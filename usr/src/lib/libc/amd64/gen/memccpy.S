@@ -32,39 +32,39 @@
 
 	ENTRY(memccpy)	/* (void *dst, void *src, uchar_t c, size_t) */
 .loop:
-	decq	%rcx		/ decrement bytes to go
+	decq	%rcx		/* decrement bytes to go */
 	jl	.notfound
 	movb	(%rsi),%dh
-	movb	%dh,(%rdi)	/ move byte
-	cmpb	%dh,%dl		/ is it the byte sought?
-	je	.found		/ yes
+	movb	%dh,(%rdi)	/* move byte */
+	cmpb	%dh,%dl		/* is it the byte sought? */
+	je	.found		/* yes */
 
-	decq	%rcx		/ decrement bytes to go
+	decq	%rcx		/* decrement bytes to go */
 	jl	.notfound
 	movb	1(%rsi),%dh
-	movb	%dh,1(%rdi)	/ move byte
-	cmpb	%dh,%dl		/ is it the byte sought?
-	je	.found1		/ yes
+	movb	%dh,1(%rdi)	/* move byte */
+	cmpb	%dh,%dl		/* is it the byte sought? */
+	je	.found1		/* yes */
 
-	decq	%rcx		/ decrement bytes to go
+	decq	%rcx		/* decrement bytes to go */
 	jl	.notfound
 	movb	2(%rsi),%dh
-	movb	%dh,2(%rdi)	/ move byte
-	cmpb	%dh,%dl		/ is it the byte sought?
-	je	.found2		/ yes
+	movb	%dh,2(%rdi)	/* move byte */
+	cmpb	%dh,%dl		/* is it the byte sought? */
+	je	.found2		/* yes */
 
-	decq	%rcx		/ decrement bytes to go
+	decq	%rcx		/* decrement bytes to go */
 	jl	.notfound
 	movb	3(%rsi),%dh
-	movb	%dh,3(%rdi)	/ move byte
+	movb	%dh,3(%rdi)	/* move byte */
 	addq	$4,%rsi
 	addq	$4,%rdi
-	cmpb	%dh,%dl		/ is it the byte sought?
-	jne	.loop		/ no
+	cmpb	%dh,%dl		/* is it the byte sought? */
+	jne	.loop		/* no */
 	decq	%rdi
 
 .found:
-	incq	%rdi		/ return pointer to next byte in dest
+	incq	%rdi		/* return pointer to next byte in dest */
 	movq	%rdi,%rax
 	ret
 
@@ -72,12 +72,12 @@
 .found2:
 	incq	%rdi
 .found1:
-	addq	$2,%rdi		/ return pointer to next byte in dest
+	addq	$2,%rdi		/* return pointer to next byte in dest */
 	movq	%rdi,%rax
 	ret
 
 	.align	4
 .notfound:
-	xorl	%eax,%eax	/ search fails
+	xorl	%eax,%eax	/* search fails */
 	ret
 	SET_SIZE(memccpy)
