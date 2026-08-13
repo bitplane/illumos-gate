@@ -6,6 +6,7 @@
 #define	_SGS_COMPAT_LINUX_H
 
 #include <stdint.h>
+#include <libintl.h>
 #include <pthread.h>
 #include <string.h>
 #include <unistd.h>
@@ -116,6 +117,8 @@ extern int assfail(const char *, const char *, int);
 #define	__GNU_INLINE	__inline__ __attribute__((__gnu_inline__))
 #define	MICROSEC	1000000
 #define	PAGESIZE	((unsigned long)sysconf(_SC_PAGESIZE))
+#define	UID_NOBODY	60001
+#define	GID_NOBODY	UID_NOBODY
 
 /* avl.c only needs ASSERT() from these illumos headers on a native host. */
 #define	_SYS_DEBUG_H

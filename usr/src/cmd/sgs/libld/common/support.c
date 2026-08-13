@@ -66,12 +66,17 @@ ld_sup_loadso(Ofl_desc *ofl, const char *obj)
 {
 	void	*handle, *fptr;
 	uint_t	interface, version = LD_SUP_VERSION1;
+	int	mode = RTLD_LAZY;
+
+#if !defined(NATIVE_BUILD) || !defined(__linux__)
+	mode |= RTLD_FIRST;
+#endif
 
 	/*
 	 * Load the required support library.  If we are unable to load it fail
 	 * with a fatal error.
 	 */
-	if ((handle = dlopen(obj, (RTLD_LAZY | RTLD_FIRST))) == NULL) {
+	if ((handle = dlopen(obj, mode)) == NULL) {
 		ld_eprintf(ofl, ERR_FATAL, MSG_INTL(MSG_SUP_NOLOAD),
 		    obj, dlerror());
 		return (S_ERROR);

@@ -13,6 +13,8 @@
 
 SUBDIRS =		\
 	include		\
+	ar		\
+	mcs		\
 	ld		\
 	libconv		\
 	libelf		\
@@ -26,6 +28,8 @@ clean :=	TARGET= clean
 clobber :=	TARGET= clobber
 
 ld: sgsmsg include libconv libelf libld
+ar: sgsmsg include libconv libelf
+mcs: sgsmsg include libconv libelf
 libconv: sgsmsg include
 libelf: sgsmsg include
 libld: sgsmsg libelf libconv liblddbg include
