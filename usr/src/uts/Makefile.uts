@@ -210,6 +210,7 @@ CFLAGS_uts		+= $(EXTRA_CFLAGS)
 CFLAGS_uts		+= $(CSOURCEDEBUGFLAGS)
 CFLAGS_uts		+= $(CUSERFLAGS)
 CFLAGS_uts		+= $(CFLAGS_uts_$(MACH))
+CFLAGS_uts		+= $(TARGET_TOOL_FLAGS)
 CFLAGS_uts		+= -_gcc=-fno-asynchronous-unwind-tables
 
 ASFLAGS_uts=		$(CFLAGS_uts)
