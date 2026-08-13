@@ -18,6 +18,14 @@ CMDDIR=		$(SRC)/cmd/rpcgen
 include		../Makefile.tools
 include		$(CMDDIR)/Makefile.common
 
+RPCGEN_CPPFLAGS_illumos =
+RPCGEN_CPPFLAGS_linux =	-I/usr/include/tirpc
+CPPFLAGS +=		$(RPCGEN_CPPFLAGS_$(NATIVE_OS))
+
+RPCGEN_LDLIBS_illumos =
+RPCGEN_LDLIBS_linux =	-ltirpc
+LDLIBS +=		$(RPCGEN_LDLIBS_$(NATIVE_OS))
+
 .KEEP_STATE:
 
 all:		$(PROG)
