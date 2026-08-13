@@ -28,6 +28,10 @@ include		../../Makefile.tools
 include		$(SRC)/cmd/sgs/liblddbg/Makefile.com
 include		../Makefile.com
 
+NATIVE_LIBLDDBG_OBJS_illumos =
+NATIVE_LIBLDDBG_OBJS_linux =	assfail.o
+SGSCOMMONOBJ +=	$(NATIVE_LIBLDDBG_OBJS_$(NATIVE_OS))
+
 .KEEP_STATE:
 
 CONVLIBDIR=	-L../libconv
@@ -55,3 +59,8 @@ $(ROOTONBLDLIBMACH64)/$(LIBLINKS): $(ROOTONBLDLIBMACH64)/$(DYNLIB)
 		$(SYMLINK) $(DYNLIB) $(ROOTONBLDLIBMACH64)/$(LIBLINKS)
 
 include		$(SGSHOME)/liblddbg/Makefile.targ
+
+POST_PROCESS_SO_illumos =	$(PROCESS_COMMENT) $@ ; $(STRIP_STABS) ; \
+			$(ELFSIGN_OBJECT) ; $(CTFMERGE_POST)
+POST_PROCESS_SO_linux =	:
+POST_PROCESS_SO =	$(POST_PROCESS_SO_$(NATIVE_OS))

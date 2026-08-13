@@ -27,6 +27,7 @@
 #include	<stdarg.h>
 #include	<errno.h>
 #include	<strings.h>
+#include	<sys/time.h>
 #include	<dlfcn.h>
 #include	<debug.h>
 #include	<conv.h>
@@ -58,9 +59,15 @@ static struct {
 	FILE	*fptr;	/* File to send debug output */
 	int	close_needed;	/* True if explicitly opened stream */
 } dbg_ofile = {
-	stderr,
+	NULL,
 	0
 };
+
+static FILE *
+dbg_file(void)
+{
+	return (dbg_ofile.fptr != NULL ? dbg_ofile.fptr : stderr);
+}
 
 
 /*
@@ -72,7 +79,7 @@ dbg_cleanup(void)
 	if (dbg_ofile.close_needed) {
 		(void) fclose(dbg_ofile.fptr);
 		dbg_ofile.close_needed = 0;
-		dbg_ofile.fptr = stderr;
+		dbg_ofile.fptr = NULL;
 	}
 }
 
@@ -204,9 +211,9 @@ dbg_print(Lm_list *lml, const char *format, ...)
 			}
 		}
 		(void) fputs(prestr ? prestr : MSG_INTL(MSG_DBG_AOUT_FMT),
-		    dbg_ofile.fptr);
+		    dbg_file());
 	} else
-		(void) fputs(MSG_INTL(MSG_DBG_DFLT_FMT), dbg_ofile.fptr);
+		(void) fputs(MSG_INTL(MSG_DBG_DFLT_FMT), dbg_file());
 
 	if (DBG_ISTIME()) {
 		Conv_time_buf_t	buf;
@@ -225,7 +232,7 @@ dbg_print(Lm_list *lml, const char *format, ...)
 	}
 
 	va_start(args, format);
-	(void) vfprintf(dbg_ofile.fptr, format, args);
-	(void) fprintf(dbg_ofile.fptr, MSG_ORIG(MSG_STR_NL));
+	(void) vfprintf(dbg_file(), format, args);
+	(void) fprintf(dbg_file(), MSG_ORIG(MSG_STR_NL));
 	va_end(args);
 }

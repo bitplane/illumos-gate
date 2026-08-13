@@ -26,8 +26,14 @@ include		../../Makefile.tools
 include		$(SRC)/cmd/sgs/ld/Makefile.com
 include		../Makefile.com
 
-LDLIBS =	-lumem -L../libconv -L$(ROOTONBLDLIBMACH64) -lld -lelf -lconv
-NATIVE_LIBS +=	libc.so libumem.so
+NATIVE_LD_UMEM_illumos =	-lumem
+NATIVE_LD_UMEM_linux =
+NATIVE_LD_LIBS_illumos =	libumem.so
+NATIVE_LD_LIBS_linux =
+
+LDLIBS =	$(NATIVE_LD_UMEM_$(NATIVE_OS)) -L../libconv \
+		-L$(ROOTONBLDLIBMACH64) -lld -lelf -lconv
+NATIVE_LIBS +=	libc.so $(NATIVE_LD_LIBS_$(NATIVE_OS))
 MAPFILES =	$(SRCDIR)/common/mapfile-intf
 RPATH =		'-R$$ORIGIN/../../lib/$(MACH)/64'
 
@@ -39,3 +45,12 @@ install: $(ROOTONBLDMACH64PROG)
 .KEEP_STATE:
 
 include		$(SGSHOME)/ld/Makefile.targ
+
+NATIVE_LD_RPATH_illumos =
+NATIVE_LD_RPATH_linux =	-_gcc=-Wl,-rpath,'$$ORIGIN/../../lib/$(MACH)/64'
+LDFLAGS +=	$(NATIVE_LD_RPATH_$(NATIVE_OS))
+
+POST_PROCESS_illumos =	$(PROCESS_COMMENT) $@ ; $(PROCESS_CTF) ; \
+			$(STRIP_STABS) ; $(ELFSIGN_OBJECT)
+POST_PROCESS_linux =	:
+POST_PROCESS =		$(POST_PROCESS_$(NATIVE_OS))

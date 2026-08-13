@@ -27,6 +27,7 @@ include ../../../Makefile.master
 #
 
 ROOTHDRS=	dlfcn.h \
+		elf.h \
 		gelf.h \
 		libelf.h \
 		proc_service.h \
@@ -43,6 +44,7 @@ SYSHDRS=	sys/elf.h \
 		sys/auxv_SPARC.h \
 		sys/auxv_386.h \
 		sys/avl.h \
+		sys/avl_impl.h \
 		sys/link.h \
 		sys/machelf.h \
 		sys/note.h \
@@ -63,6 +65,4 @@ clean:
 
 clobber: clean
 	$(RM) $(SYSHDRS) $(ROOTHDRS)
-
-
 

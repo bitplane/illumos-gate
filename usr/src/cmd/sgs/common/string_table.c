@@ -28,6 +28,7 @@
 #include <strings.h>
 #include <sgs.h>
 #include <stdio.h>
+#include <string.h>
 
 /*
  * This file provides the interfaces to build a Str_tbl suitable for use by

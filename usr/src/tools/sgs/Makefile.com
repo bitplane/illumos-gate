@@ -12,5 +12,14 @@
 # Copyright 2019, Richard Lowe.
 
 CPPFLAGS =	-I. -I$(SRCDIR) -I$(SRCDIR)/common \
+	$(NATIVE_SGS_COMPAT_INCLUDES) \
 	-I$(SGSHOME)/include -I$(SGSHOME)/include/$(MACH) \
-	-I../include $(CPPFLAGS.native) -I$(ELFCAP) -DNATIVE_BUILD
+	-I../include $(CPPFLAGS.native) $(NATIVE_SGS_COMPAT) \
+	$(NATIVE_SGS_TARGET_INCLUDES) \
+	-I$(ELFCAP) -DNATIVE_BUILD
+
+# Native linker tools do not carry target CTF in their intermediate objects.
+POST_PROCESS_O=	:
+LDFLAGS=	$(LDFLAGS_$(NATIVE_OS))
+LDCHECKS=	$(LDCHECKS_$(NATIVE_OS))
+DYNFLAGS=	$(DYNFLAGS_$(NATIVE_OS))

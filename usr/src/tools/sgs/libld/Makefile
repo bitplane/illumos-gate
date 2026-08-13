@@ -29,6 +29,10 @@ include		../../Makefile.tools
 include		$(SRC)/cmd/sgs/libld/Makefile.com
 include		../Makefile.com
 
+NATIVE_LIBLD_OBJS_illumos =
+NATIVE_LIBLD_OBJS_linux =	compat_linux.o
+OBJECTS +=	$(NATIVE_LIBLD_OBJS_$(NATIVE_OS))
+
 .KEEP_STATE:
 
 #
@@ -41,8 +45,11 @@ LDLIBS =	-L../libconv -lconv -L$(ROOTONBLDLIBMACH64) -llddbg -lelf -lc
 NATIVE_LIBS +=	libc.so
 
 CPPFLAGS += -DUSE_LIBLD_MALLOC -I$(SRC)/lib/libc/inc \
-	    -I$(SRC)/uts/common/krtld -I$(SRC)/uts/sparc \
+	    -I$(SRC)/uts/common/krtld \
 	    -I$(SRC)/uts/common
+
+pics/doreloc_sparc_32.o pics/doreloc_sparc_64.o := \
+	CPPFLAGS += -I$(SRC)/uts/sparc
 
 DYNFLAGS +=	$(VERSREF) '-Wl,-R$$ORIGIN'
 
@@ -65,4 +72,14 @@ $(ROOTONBLDLIBMACH64)/$(LIBLINKS): $(ROOTONBLDLIBMACH64)/$(DYNLIB)
 		@$(RM) $(ROOTONBLDLIBMACH64)/$(LIBLINKS)
 		$(SYMLINK) $(DYNLIB) $(ROOTONBLDLIBMACH64)/$(LIBLINKS)
 
+pics/compat_linux.o: $(SRC)/tools/sgs/common/compat_linux.c
+		$(COMPILE.c) $(C_PICFLAGS) -o $@ \
+		    $(SRC)/tools/sgs/common/compat_linux.c
+		$(POST_PROCESS_O)
+
 include		$(SGSHOME)/libld/Makefile.targ
+
+POST_PROCESS_SO_illumos =	$(PROCESS_COMMENT) $@ ; $(STRIP_STABS) ; \
+			$(ELFSIGN_OBJECT) ; $(CTFMERGE_POST)
+POST_PROCESS_SO_linux =	:
+POST_PROCESS_SO =	$(POST_PROCESS_SO_$(NATIVE_OS))

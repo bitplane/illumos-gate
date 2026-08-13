@@ -5,6 +5,8 @@
 
 NATIVE_CFLAGS=		-O $($(NATIVE_MACH)_CFLAGS) $(CSTD) -U__sun \
 			-D_GNU_SOURCE
+# illumos' amd64 save-args ABI is not part of native Linux objects.
+SAVEARGS=
 NATIVE_ASFLAGS=	$(NATIVE_CFLAGS)
 NATIVE_CCFLAGS=	-O $($(NATIVE_MACH)_CCFLAGS)
 NATIVE_CFLAGS64=	-O $($(NATIVE_MACH64)_CFLAGS) $(CSTD) -U__sun \
@@ -26,6 +28,12 @@ NATIVE_CTF_COMPAT=	-_gcc=-D_LARGEFILE64_SOURCE \
 			-_gcc=$(SRC)/tools/ctf/common/compat_linux.h
 NATIVE_HOST_CPPFLAGS=	-DCTF_HOST_LINUX
 NATIVE_CTF_COMPAT_INCLUDES=	-I$(SRC)/tools/ctf/common/linux
+NATIVE_SGS_COMPAT=	-_gcc=-include \
+			-_gcc=$(SRC)/tools/sgs/common/compat_linux.h
+NATIVE_SGS_COMPAT_INCLUDES=	-I$(SRC)/tools/sgs/common/linux
+NATIVE_SGS_TARGET_INCLUDES=	-_gcc=-idirafter -_gcc=$(SRC) \
+			-_gcc=-idirafter -_gcc=$(SRC)/uts/common \
+			-_gcc=-idirafter -_gcc=$(SRC)/head
 NATIVE_THREAD_LIBS=	-lpthread
 NATIVE_AVL_LIB=
 NATIVE_ORIGIN_RPATH=	-_gcc=-Wl,-rpath,'$$ORIGIN/../../lib/$(MACH)' \

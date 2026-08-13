@@ -35,10 +35,13 @@ COMOBJS64 =	cap_machelf64.o		dynamic_machelf64.o \
 		globals_machelf64.o	sections_machelf64.o \
 		symbols_machelf64.o	symbols_sparc_machelf64.o
 
+LIBCONV_CORENOTE=	corenote.o
+LIBCONV_CORENOTE_MSG=	corenote_msg.o
+
 COMOBJS=	arch.o			audit.o \
 		c_literal.o \
 		cap.o			config.o \
-		corenote.o		data.o \
+		$(LIBCONV_CORENOTE)	data.o \
 		deftag.o		demangle.o \
 		dl.o			dwarf.o \
 		dwarf_ehe.o		dynamic.o \
@@ -60,7 +63,7 @@ ASOBJS=		vernote.o
 BLTOBJS=	arch_msg.o		audit_msg.o \
 		c_literal_msg.o \
 		cap_msg.o		config_msg.o \
-		corenote_msg.o		data_msg.o \
+		$(LIBCONV_CORENOTE_MSG)	data_msg.o \
 		deftag_msg.o		demangle_msg.o \
 		dl_msg.o		dwarf_msg.o \
 		dwarf_ehe_msg.o		dynamic_msg.o \

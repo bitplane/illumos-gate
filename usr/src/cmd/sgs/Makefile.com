@@ -67,8 +67,10 @@ $(PICS64) :=	sparc_CFLAGS += $(C_PICFLAGS)
 $(PICS64) :=	sparcv9_CFLAGS += $(C_PICFLAGS)
 $(PICS64) :=	CPPFLAGS += -DPIC -D_REENTRANT
 
-LDFLAGS +=	$(ZIGNORE)
-DYNFLAGS +=	$(ZIGNORE)
+SGS_ZIGNORE_illumos =	$(ZIGNORE)
+SGS_ZIGNORE_linux =
+LDFLAGS +=	$(SGS_ZIGNORE_$(NATIVE_OS))
+DYNFLAGS +=	$(SGS_ZIGNORE_$(NATIVE_OS))
 
 # Establish the local tools, proto and package area.
 

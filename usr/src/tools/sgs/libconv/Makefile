@@ -29,6 +29,10 @@ include		../../Makefile.tools
 include		$(SRC)/cmd/sgs/libconv/Makefile.com
 include		../Makefile.com
 
+# Core-note presentation is not required by the bootstrap link-editor.
+LIBCONV_CORENOTE=
+LIBCONV_CORENOTE_MSG=
+
 CPPFLAGS +=	-I$(SRC)/lib/libc/inc -I$(ELFCAP) \
 	-I$(SRC)/common/sgsrtcid \
 	-I$(SRC)/lib/libdemangle/common
