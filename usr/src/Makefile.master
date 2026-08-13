@@ -849,6 +849,8 @@ LD64=			$($(MACH64)_LD)
 CCYFLAG=		-Y I,
 
 BDIRECT=	-Wl,-Bdirect
+NATIVE_BDIRECT_illumos=	$(BDIRECT)
+NATIVE_BDIRECT=	$(NATIVE_BDIRECT_$(NATIVE_OS))
 BDYNAMIC=	-Wl,-Bdynamic
 BLOCAL=		-Wl,-Blocal
 BNODIRECT=	-Wl,-Bnodirect
