@@ -956,6 +956,24 @@ do_gcc(cw_ictx_t *ctx)
 
 	if (model != NULL)
 		newae(ctx->i_ae, model);
+#if defined(__linux__)
+	if (op == CW_O_LINK && ctx->i_linker != NULL) {
+		char *dir = strdup(ctx->i_linker);
+		char *slash;
+		char *flag;
+
+		if (dir == NULL)
+			nomem();
+		if ((slash = strrchr(dir, '/')) == NULL)
+			error(ctx->i_linker);
+		slash[1] = '\0';
+		if (asprintf(&flag, "-B%s", dir) == -1)
+			nomem();
+		newae(ctx->i_ae, flag);
+		free(flag);
+		free(dir);
+	}
+#endif
 	if (!nolibc)
 		newae(ctx->i_ae, "-lc");
 	if (!seen_o && (ctx->i_flags & CW_F_SHADOW)) {

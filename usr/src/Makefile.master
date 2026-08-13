@@ -784,6 +784,9 @@ CW_CC_COMPILERS=	$(PRIMARY_CC:%=--primary %) $(SHADOW_CCS:%=--shadow %)
 CW_CCC_COMPILERS=	$(PRIMARY_CCC:%=--primary %) $(SHADOW_CCCS:%=--shadow %)
 
 CW_LINKER=		--linker $(LD)
+NATIVE_CW_LINKER_illumos=	$(CW_LINKER)
+NATIVE_CW_LINKER_linux=
+NATIVE_CW_LINKER=	$(NATIVE_CW_LINKER_$(NATIVE_OS))
 
 # Specify platform compiler versions for languages
 # that we use (currently only c and c++).
@@ -799,9 +802,9 @@ BUILD_CPP=		/usr/lib/cpp
 BUILD_LD=		$(ONBLD_TOOLS)/bin/$(MACH64)/ld
 BUILD_AS=		$(BUILD_CC)
 
-NATIVEBUILD_CC=		$(NATIVE_CW) $(CWOPTS) --tag native $(CW_LINKER) \
+NATIVEBUILD_CC=		$(NATIVE_CW) $(CWOPTS) --tag native $(NATIVE_CW_LINKER) \
 	$(CW_CC_COMPILERS) --
-NATIVEBUILD_CCC=	$(NATIVE_CW) $(CWOPTS) --tag native -C $(CW_LINKER) \
+NATIVEBUILD_CCC=	$(NATIVE_CW) $(CWOPTS) --tag native -C $(NATIVE_CW_LINKER) \
 	$(CW_CCC_COMPILERS) --
 NATIVEBUILD_CPP=	/usr/lib/cpp
 NATIVEBUILD_LD=		$(ONBLD_TOOLS)/bin/$(MACH64)/ld
