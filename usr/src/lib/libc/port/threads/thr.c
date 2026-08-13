@@ -75,8 +75,12 @@ static	int	pthread_concurrency;
 #define	TIDHASH(tid, udp)	(tid & (udp)->hash_mask)
 
 /* initial allocation, just enough for one lwp */
+#if defined(__GNUC__)
+thr_hash_table_t init_hash_table[1] __attribute__((aligned(64))) = {
+#else
 #pragma align 64(init_hash_table)
 thr_hash_table_t init_hash_table[1] = {
+#endif
 	{ DEFAULTMUTEX, DEFAULTCV, NULL },
 };
 
