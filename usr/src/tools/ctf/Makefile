@@ -44,6 +44,7 @@ ctfmerge: libctf
 ctfdiff: libctf
 ctfdump: libctf
 ctfconvert: libctf
+stabs: libctf
 
 all clean clobber install lint: dwarf .WAIT $(SUBDIRS)
 

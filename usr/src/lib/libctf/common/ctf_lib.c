@@ -39,7 +39,9 @@
 #include <zlib.h>
 #include <sys/debug.h>
 
-#ifdef _LP64
+#ifdef CTF_HOST_LINUX
+static const char *_libctf_zlib = "libz.so.1";
+#elif defined(_LP64)
 static const char *_libctf_zlib = "/usr/lib/64/libz.so.1";
 #else
 static const char *_libctf_zlib = "/usr/lib/libz.so.1";
@@ -69,7 +71,11 @@ typedef struct ctf_zdata {
 	z_stream	czd_zstr;
 } ctf_zdata_t;
 
+#ifdef CTF_HOST_LINUX
+static void _libctf_init(void) __attribute__((constructor));
+#else
 #pragma init(_libctf_init)
+#endif
 void
 _libctf_init(void)
 {
@@ -97,8 +103,11 @@ ctf_zopen(int *errp)
 	if (zlib.z_dlp != NULL)
 		return (zlib.z_dlp); /* library is already loaded */
 
+	/* A Linux soname is resolved by the dynamic loader, not access(2). */
+#ifndef CTF_HOST_LINUX
 	if (access(_libctf_zlib, R_OK) == -1)
 		return (ctf_set_open_errno(errp, ECTF_ZMISSING));
+#endif
 
 	if ((zlib.z_dlp = dlopen(_libctf_zlib, RTLD_LAZY | RTLD_LOCAL)) == NULL)
 		return (ctf_set_open_errno(errp, ECTF_ZINIT));

@@ -24,15 +24,22 @@ CPPFLAGS +=	-I$(SRC)/lib/libctf/common/ \
 		-include ../../common/ctf_headers.h \
 		-DCTF_OLD_VERSIONS \
 		-DCTF_TOOLS_BUILD
-LDLIBS += -lc -lelf -L$(ROOTONBLDLIBMACH) -ldwarf -lavl
-NATIVE_LIBS += libelf.so libavl.so libc.so
-DYNFLAGS += '-R$$ORIGIN/../../lib/$(MACH)'
+LDLIBS += -lc -lelf -L$(ROOTONBLDLIBMACH) -ldwarf $(NATIVE_AVL_LIB) \
+	$(NATIVE_THREAD_LIBS)
+NATIVE_LIBS += libelf.so libc.so
+DYNFLAGS += $(NATIVE_ORIGIN_RPATH)
 
 # As a bootstrapping issue, we can't use the real mapfile because we build
 # early in tools and thus don't have support for assertions.
 MAPFILES=
 
 .KEEP_STATE:
+
+pics/avl.o: $(SRC)/common/avl/avl.c
+	$(COMPILE.c) -o $@ $(SRC)/common/avl/avl.c
+
+pics/compat_linux.o: $(SRC)/tools/ctf/common/compat_linux.c
+	$(COMPILE.c) -o $@ $(SRC)/tools/ctf/common/compat_linux.c
 
 all: $(LIBS)
 

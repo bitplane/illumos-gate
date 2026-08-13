@@ -37,12 +37,13 @@ include ../../../Makefile.tools
 #
 
 HDRDIRS= \
-	-_gcc=-nostdinc \
+	$(NATIVE_CTF_COMPAT) \
+	$(NATIVE_CTF_COMPAT_INCLUDES) \
+	$(NATIVE_NOSTDINC) \
 	-I../../common \
-	-I$(SRC) \
+	$(NATIVE_SYSINCLUDE) \
 	-I/usr/include \
-	-I$(SRC)/uts/common \
-	-I$(SRC)/common/ctf \
+	$(NATIVE_CTF_TARGET_INCLUDES) \
 	-I$(NATIVE_ADJUNCT)/include
 
 CPPFLAGS += $(HDRDIRS)

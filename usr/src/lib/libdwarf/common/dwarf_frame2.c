@@ -32,6 +32,7 @@
     and related helper functions for reading cie/fde data.  */
 
 #include "config.h"
+#include <stdint.h> /* For uintptr_t */
 #include <stdio.h>
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

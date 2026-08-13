@@ -19,7 +19,7 @@ LDLIBS += -lctf -lelf
 
 LDFLAGS += \
 	-L$(ROOTONBLDLIBMACH) \
-	'-R$$ORIGIN/../../lib/$(MACH)' \
+	$(NATIVE_ORIGIN_RPATH) \
 
 NATIVE_LIBS += libelf.so
 CPPFLAGS += -include ../../common/ctf_headers.h

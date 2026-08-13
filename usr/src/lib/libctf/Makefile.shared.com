@@ -51,6 +51,11 @@ MERGEQ_OBJS = \
 LIST_OBJS = \
 	list.o
 
+NATIVE_AVL_OBJS_linux = avl.o
+NATIVE_AVL_OBJS = $(NATIVE_AVL_OBJS_$(NATIVE_OS))
+NATIVE_COMPAT_OBJS_linux = compat_linux.o
+NATIVE_COMPAT_OBJS = $(NATIVE_COMPAT_OBJS_$(NATIVE_OS))
+
 LIB_OBJS = \
 	ctf_convert.o \
 	ctf_elfwrite.o \
@@ -59,7 +64,8 @@ LIB_OBJS = \
 	ctf_merge.o \
 	ctf_subr.o
 
-OBJECTS = $(COMMON_OBJS) $(LIB_OBJS) $(LIST_OBJS) $(MERGEQ_OBJS)
+OBJECTS = $(COMMON_OBJS) $(LIB_OBJS) $(LIST_OBJS) $(MERGEQ_OBJS) \
+	$(NATIVE_AVL_OBJS) $(NATIVE_COMPAT_OBJS)
 MAPFILEDIR = $(SRC)/lib/libctf
 
 include $(SRC)/lib/Makefile.lib
@@ -68,10 +74,12 @@ SRCS = \
 	$(COMMON_OBJS:%.o=$(SRC)/common/ctf/%.c) \
 	$(LIB_OBJS:%.o=$(SRC)/lib/libctf/common/%.c) \
 	$(LIST_OBJS:%.o=$(SRC)/common/list/%.c) \
-	$(MERGEQ_OBJS:%.o=$(SRC)/lib/mergeq/%.c)
+	$(MERGEQ_OBJS:%.o=$(SRC)/lib/mergeq/%.c) \
+	$(NATIVE_AVL_OBJS:%.o=$(SRC)/common/avl/%.c) \
+	$(NATIVE_COMPAT_OBJS:%.o=$(SRC)/tools/ctf/common/%.c)
 
 LIBS = $(DYNLIB)
-LDLIBS += -lc -lelf -ldwarf -lavl
+LDLIBS += -lc -lelf -ldwarf $(NATIVE_AVL_LIB)
 
 CSTD = $(CSTD_GNU99)
 
