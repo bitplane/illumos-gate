@@ -189,6 +189,10 @@ include $(SRC)/Makefile.smatch
 #
 CFLAGS_uts_i386 += -_gcc=-fno-shrink-wrap
 #
+# The x86 assembly helpers caller() and getfp() require frame pointers.
+#
+CFLAGS_uts_i386 += -_gcc=-fno-omit-frame-pointer
+#
 # retpoline support
 #
 CFLAGS_uts_i386 += -_gcc=-mindirect-branch=thunk-extern
