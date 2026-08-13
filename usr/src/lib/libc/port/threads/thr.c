@@ -1534,9 +1534,13 @@ libc_init(void)
 	__threaded = 1;
 }
 
+#if defined(__SUNPRO_C)
 #pragma fini(libc_fini)
+#else
+void libc_fini(void) __attribute__((destructor));
+#endif
 void
-libc_fini()
+libc_fini(void)
 {
 	/*
 	 * If we are doing fini processing for the instance of libc
