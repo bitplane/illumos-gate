@@ -809,6 +809,9 @@ do_gcc(cw_ictx_t *ctx)
 				if (strcmp(arg, "-xmodel=kernel") == 0) {
 					newae(ctx->i_ae, "-ffreestanding");
 					newae(ctx->i_ae, "-mno-red-zone");
+#if defined(__linux__)
+					newae(ctx->i_ae, "-fno-pie");
+#endif
 					model = "-mcmodel=kernel";
 					nolibc = 1;
 					break;

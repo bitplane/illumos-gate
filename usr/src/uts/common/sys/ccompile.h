@@ -66,7 +66,7 @@ extern "C" {
 /*
  * Handle the kernel printf routines that can take '%b' too
  */
-#if __GNUC_VERSION < 30402
+#if __GNUC_VERSION < 30402 || !defined(__GNUC_CMN_ERR)
 /*
  * XX64 at least this doesn't work correctly yet with 3.4.1 anyway!
  */

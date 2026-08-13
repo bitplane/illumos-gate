@@ -27,7 +27,9 @@
 # Copyright 2020 OmniOS Community Edition (OmniOSce) Association.
 # Copyright 2022 Jason King
 
-SHELL=/usr/bin/ksh93
+SHELL_illumos=/usr/bin/ksh93
+SHELL_linux=/bin/sh
+SHELL=$(SHELL_$(NATIVE_OS))
 
 SCRIPTS= \
 	bldenv \

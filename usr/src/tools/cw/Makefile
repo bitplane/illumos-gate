@@ -37,7 +37,7 @@ CFLAGS += $(CCVERBOSE)
 
 # Override CFLAGS.  This is needed only for bootstrap of cw.
 CW_CFLAGS_illumos=	-O -D__sun -Wall -Werror -std=gnu99 -nodefaultlibs
-CW_CFLAGS_linux=	-O -D_GNU_SOURCE -Wall -Werror -std=gnu99
+CW_CFLAGS_linux=	-O -D_GNU_SOURCE -D__x86 -Wall -Werror -std=gnu99
 CFLAGS=		$(CW_CFLAGS_$(NATIVE_OS))
 
 CW_LDLIBS_illumos=	-Wl,-zassert-deflib=libc.so -lc

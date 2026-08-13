@@ -335,12 +335,16 @@ CC32BITCALLERS=		-_gcc=-massume-32bit-callers
 # Additionally, we wish to prevent optimisations which cause GCC to clone
 # functions -- in particular, these may cause unhelpful symbols to be
 # emitted instead of function names
+CCNOCLONE_illumos= -_gcc=-fno-clone-functions
+CCNOCLONE_linux=
+CCNOCLONE= $(CCNOCLONE_$(NATIVE_OS))
+
 CCNOAUTOINLINE= \
 	-_gcc=-fno-inline-small-functions \
 	-_gcc=-fno-inline-functions-called-once \
 	-_gcc=-fno-ipa-cp \
 	-_gcc=-fno-ipa-icf \
-	-_gcc=-fno-clone-functions
+	$(CCNOCLONE)
 
 # GCC may put functions in different named sub-sections of .text based on
 # their presumed calling frequency.  At least in the kernel, where we actually
@@ -428,7 +432,9 @@ NO_SIMD=		-_gcc=-mno-mmx -_gcc=-mno-sse
 i386_STAND_FLAGS=	-_gcc=-ffreestanding $(NO_SIMD)
 amd64_STAND_FLAGS=	-xmodel=kernel $(NO_SIMD)
 
-SAVEARGS=		-Wu,-save_args
+SAVEARGS_illumos=	-Wu,-save_args
+SAVEARGS_linux=
+SAVEARGS=		$(SAVEARGS_$(NATIVE_OS))
 amd64_STAND_FLAGS	+= $(SAVEARGS)
 
 STAND_FLAGS_32 = $($(MACH)_STAND_FLAGS)
@@ -588,8 +594,11 @@ NATIVE_CCFLAGS64=	$(CCOPTFLAG64) $($(NATIVE_MACH64)_CCFLAGS) \
 
 DTEXTDOM=-DTEXT_DOMAIN=\"$(TEXT_DOMAIN)\"	# For messaging.
 DTS_ERRNO=-D_TS_ERRNO
+GNUC_CMN_ERR_illumos=-D__GNUC_CMN_ERR
+GNUC_CMN_ERR_linux=
+GNUC_CMN_ERR=$(GNUC_CMN_ERR_$(NATIVE_OS))
 CPPFLAGS.first=	# Please keep empty.  Only lower makefiles should set this.
-CPPFLAGS.master=$(DTEXTDOM) $(DTS_ERRNO) \
+CPPFLAGS.master=$(DTEXTDOM) $(DTS_ERRNO) $(GNUC_CMN_ERR) \
 	$(ENVCPPFLAGS1) $(ENVCPPFLAGS2) $(ENVCPPFLAGS3) $(ENVCPPFLAGS4) \
 	$(ADJUNCT_PROTO:%=-I%/usr/include)
 CPPFLAGS.native=$(ENVCPPFLAGS1) $(ENVCPPFLAGS2) $(ENVCPPFLAGS3) \
@@ -1084,9 +1093,14 @@ PKGPUBLISHER_NONREDIST=	on-extra
 #
 .SUFFIXES: .pl .pm .py .pyc
 
+PERL_SHEBANG_illumos=
+PERL_SHEBANG_linux=-e '1s|/bin/perl|/usr/bin/perl|'
+PERL_SHEBANG=$(PERL_SHEBANG_$(NATIVE_OS))
+
 .pl:
 	$(RM) $@;
-	$(SED) -e "s@TEXT_DOMAIN@\"$(TEXT_DOMAIN)\"@" $< > $@;
+	$(SED) $(PERL_SHEBANG) \
+	    -e "s@TEXT_DOMAIN@\"$(TEXT_DOMAIN)\"@" $< > $@;
 	$(CHMOD) +x $@
 
 .py:
