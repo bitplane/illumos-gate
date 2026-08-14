@@ -380,47 +380,47 @@ elf_plt_trace()
 	 * Now that we've saved all of our registers, figure out what we need to
 	 * do next.
 	 */
-	movq	SPDYNOFF(%rbp), %rax			/ %rax = dyndata
-	testb	$LA_SYMB_NOPLTENTER, SBFLAGS_OFF(%rax)	/ <link.h>
+	movq	SPDYNOFF(%rbp), %rax			/* %rax = dyndata */
+	testb	$LA_SYMB_NOPLTENTER, SBFLAGS_OFF(%rax)	/* <link.h> */
 	je	.start_pltenter
 	movq	SYMDEF_VALUE_OFF(%rax), %rdi
-	movq	%rdi, SPDESTOFF(%rbp)		/ save destination address
+	movq	%rdi, SPDESTOFF(%rbp)		/* save destination address */
 	jmp	.end_pltenter
 
 .start_pltenter:
 	/*
 	 * save all registers into La_amd64_regs
 	 */
-	leaq	SPLAREGOFF(%rbp), %rsi	/ %rsi = &La_amd64_regs
+	leaq	SPLAREGOFF(%rbp), %rsi	/* %rsi = &La_amd64_regs */
 	leaq	8(%rbp), %rdi
-	movq	%rdi, 0(%rsi)		/ la_rsp
+	movq	%rdi, 0(%rsi)		/* la_rsp */
 	movq	0(%rbp), %rdi
-	movq	%rdi, 8(%rsi)		/ la_rbp
+	movq	%rdi, 8(%rsi)		/* la_rbp */
 	movq	ORIG_RDI(%rbp), %rdi
-	movq	%rdi, 16(%rsi)		/ la_rdi
+	movq	%rdi, 16(%rsi)		/* la_rdi */
 	movq	ORIG_RSI(%rbp), %rdi
-	movq	%rdi, 24(%rsi)		/ la_rsi
+	movq	%rdi, 24(%rsi)		/* la_rsi */
 	movq	ORIG_RDX(%rbp), %rdi
-	movq	%rdi, 32(%rsi)		/ la_rdx
+	movq	%rdi, 32(%rsi)		/* la_rdx */
 	movq	ORIG_RCX(%rbp), %rdi
-	movq	%rdi, 40(%rsi)		/ la_rcx
+	movq	%rdi, 40(%rsi)		/* la_rcx */
 	movq	ORIG_R8(%rbp), %rdi
-	movq	%rdi, 48(%rsi)		/ la_r8
+	movq	%rdi, 48(%rsi)		/* la_r8 */
 	movq	ORIG_R9(%rbp), %rdi
-	movq	%rdi, 56(%rsi)		/ la_r9
+	movq	%rdi, 56(%rsi)		/* la_r9 */
 
 	/*
 	 * prepare for call to la_pltenter
 	 */
-	movq	SPDYNOFF(%rbp), %r11		/ %r11 = &dyndata
-	leaq	SBFLAGS_OFF(%r11), %r9		/ arg6 (&sb_flags)
-	leaq	SPLAREGOFF(%rbp), %r8		/ arg5 (&La_amd64_regs)
-	movl	SYMNDX_OFF(%r11), %ecx		/ arg4 (symndx)
-	leaq	SYMDEF_OFF(%r11), %rdx		/ arg3 (&Sym)
-	movq	DEFLMP_OFF(%r11), %rsi		/ arg2 (dlmp)
-	movq	REFLMP_OFF(%r11), %rdi		/ arg1 (rlmp)
+	movq	SPDYNOFF(%rbp), %r11		/* %r11 = &dyndata */
+	leaq	SBFLAGS_OFF(%r11), %r9		/* arg6 (&sb_flags) */
+	leaq	SPLAREGOFF(%rbp), %r8		/* arg5 (&La_amd64_regs) */
+	movl	SYMNDX_OFF(%r11), %ecx		/* arg4 (symndx) */
+	leaq	SYMDEF_OFF(%r11), %rdx		/* arg3 (&Sym) */
+	movq	DEFLMP_OFF(%r11), %rsi		/* arg2 (dlmp) */
+	movq	REFLMP_OFF(%r11), %rdi		/* arg1 (rlmp) */
 	call	audit_pltenter@PLT
-	movq	%rax, SPDESTOFF(%rbp)		/ save calling address
+	movq	%rax, SPDESTOFF(%rbp)		/* save calling address */
 .end_pltenter:
 
 	/*
@@ -431,13 +431,13 @@ elf_plt_trace()
 	 * at the same time.
 	 */
 	movl	audit_flags(%rip), %eax
-	andl	$AF_PLTEXIT, %eax		/ value of audit.h:AF_PLTEXIT
+	andl	$AF_PLTEXIT, %eax		/* value of audit.h:AF_PLTEXIT */
 	cmpl	$0, %eax
 	je	.bypass_pltexit
 	/*
 	 * Has the *nopltexit* flag been set for this entry point
 	 */
-	movq	SPDYNOFF(%rbp), %r11		/ %r11 = &dyndata
+	movq	SPDYNOFF(%rbp), %r11		/* %r11 = &dyndata */
 	testb	$LA_SYMB_NOPLTEXIT, SBFLAGS_OFF(%r11)
 	je	.start_pltexit
 
@@ -446,9 +446,9 @@ elf_plt_trace()
 	 * No PLTEXIT processing required.
 	 */
 	movq	0(%rbp), %r11
-	movq	%r11, -8(%rbp)			/ move prev %rbp
-	movq	SPDESTOFF(%rbp), %r11		/ r11 == calling destination
-	movq	%r11, 0(%rbp)			/ store destination at top
+	movq	%r11, -8(%rbp)			/* move prev %rbp */
+	movq	SPDESTOFF(%rbp), %r11		/* r11 == calling destination */
+	movq	%r11, 0(%rbp)			/* store destination at top */
 
 	/* Restore FPU */
 	movq	_plt_fp_restore@GOTPCREL(%rip),%r10
@@ -466,8 +466,8 @@ elf_plt_trace()
 	movq	ORIG_R11(%rbp), %r11
 	movq	ORIG_RAX(%rbp), %rax
 
-	subq	$8, %rbp			/ adjust %rbp for 'ret'
-	movq	%rbp, %rsp			/
+	subq	$8, %rbp			/* adjust %rbp for 'ret' */
+	movq	%rbp, %rsp
 	/*
 	 * At this point, after a little doctoring, we should
 	 * have the following on the stack:
@@ -479,9 +479,9 @@ elf_plt_trace()
 	 * So - we pop the previous %rbp, and then
 	 * ret to our final destination.
 	 */
-	popq	%rbp				/
-	ret					/ jmp to final destination
-						/ and clean up stack :)
+	popq	%rbp
+	ret					/* jmp to final destination */
+						/* and clean up stack :) */
 
 .start_pltexit:
 	/*
@@ -491,10 +491,10 @@ elf_plt_trace()
 	 * stack state.  This duplicates all of the arguements
 	 * that were to be passed to the destination procedure.
 	 */
-	movq	%rbp, %rdi			/
-	addq	$16, %rdi			/    %rdi = src
-	movq	(%rbp), %rdx			/
-	subq	%rdi, %rdx			/    %rdx == prev frame sz
+	movq	%rbp, %rdi
+	addq	$16, %rdi			/*    %rdi = src */
+	movq	(%rbp), %rdx
+	subq	%rdi, %rdx			/*    %rdx == prev frame sz */
 	/*
 	 * If audit_argcnt > 0 then we limit the number of
 	 * arguements that will be duplicated to audit_argcnt.
@@ -502,10 +502,10 @@ elf_plt_trace()
 	 * If (prev_stack_size > (audit_argcnt * 8))
 	 *	prev_stack_size = audit_argcnt * 8;
 	 */
-	movl	audit_argcnt(%rip),%eax		/   %eax = audit_argcnt
+	movl	audit_argcnt(%rip),%eax		/*   %eax = audit_argcnt */
 	cmpl	$0, %eax
 	jle	.grow_stack
-	leaq	(,%rax,8), %rax			/    %eax = %eax * 4
+	leaq	(,%rax,8), %rax			/*    %eax = %eax * 4 */
 	cmpq	%rax,%rdx
 	jle	.grow_stack
 	movq	%rax, %rdx
@@ -515,28 +515,28 @@ elf_plt_trace()
 	 */
 .grow_stack:
 	movq	%rsp, %r11
-	subq	%rdx, %rsp			/    grow the stack
-	movq	%rdx, SPPRVSTKOFF(%rbp)		/    -88(%rbp) == prev frame sz
-	movq	%rsp, %rcx			/    %rcx = dest
-	addq	%rcx, %rdx			/    %rdx == tail of dest
+	subq	%rdx, %rsp			/*    grow the stack */
+	movq	%rdx, SPPRVSTKOFF(%rbp)		/*    -88(%rbp) == prev frame sz */
+	movq	%rsp, %rcx			/*    %rcx = dest */
+	addq	%rcx, %rdx			/*    %rdx == tail of dest */
 .while_base:
-	cmpq	%rdx, %rcx			/   while (base+size >= src++) {
-	jge	.end_while			/
+	cmpq	%rdx, %rcx			/*   while (base+size >= src++) { */
+	jge	.end_while
 	movq	(%rdi), %rsi
-	movq	%rsi,(%rcx)			/        *dest = *src
-	addq	$8, %rdi			/	 src++
-	addq	$8, %rcx			/        dest++
-	jmp	.while_base			/    }
+	movq	%rsi,(%rcx)			/*        *dest = *src */
+	addq	$8, %rdi			/*  src++ */
+	addq	$8, %rcx			/*        dest++ */
+	jmp	.while_base			/*    } */
 
 	/*
 	 * The above stack is now an exact duplicate of
 	 * the stack of the original calling procedure.
 	 */
 .end_while:
-	/
-	/ Restore registers using %r11 which contains our old %rsp value
-	/ before growing the stack.
-	/
+	/*
+	 * Restore registers using %r11 which contains our old %rsp value
+	 * before growing the stack.
+	 */
 	movq	_plt_fp_restore@GOTPCREL(%rip),%r10
 	movq	%r11, %rdi
 	call	*(%r10)
@@ -558,17 +558,15 @@ elf_plt_trace()
 	 */
 	call	*SPDESTOFF(%rbp)
 
-	addq	SPPRVSTKOFF(%rbp), %rsp	/ cleanup dupped stack
+	addq	SPPRVSTKOFF(%rbp), %rsp	/* cleanup dupped stack */
 
-	/
-	/ prepare for call to audit_pltenter()
-	/
-	movq	SPDYNOFF(%rbp), %r11		/ %r11 = &dyndata
-	movq	SYMNDX_OFF(%r11), %r8		/ arg5 (symndx)
-	leaq	SYMDEF_OFF(%r11), %rcx		/ arg4 (&Sym)
-	movq	DEFLMP_OFF(%r11), %rdx		/ arg3 (dlmp)
-	movq	REFLMP_OFF(%r11), %rsi		/ arg2 (rlmp)
-	movq	%rax, %rdi			/ arg1 (returnval)
+	/* Prepare for call to audit_pltenter(). */
+	movq	SPDYNOFF(%rbp), %r11		/* %r11 = &dyndata */
+	movq	SYMNDX_OFF(%r11), %r8		/* arg5 (symndx) */
+	leaq	SYMDEF_OFF(%r11), %rcx		/* arg4 (&Sym) */
+	movq	DEFLMP_OFF(%r11), %rdx		/* arg3 (dlmp) */
+	movq	REFLMP_OFF(%r11), %rsi		/* arg2 (rlmp) */
+	movq	%rax, %rdi			/* arg1 (returnval) */
 	call	audit_pltexit@PLT
 
 	/*
@@ -592,9 +590,9 @@ elf_plt_trace()
 	movq	ORIG_R11(%rbp), %r11
 	movq	SPPRVSTKOFF(%rbp), %rax
 
-	movq	%rbp, %rsp			/
-	popq	%rbp				/
-	ret					/ return to caller
+	movq	%rbp, %rsp
+	popq	%rbp
+	ret					/* return to caller */
 	SET_SIZE(elf_plt_trace)
 #endif
 
