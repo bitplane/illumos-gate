@@ -1,0 +1,5 @@
+*link:
+%{shared:-shared}
+
+*link_command:
+%{!fsyntax-only:%{!c:%{!M:%{!MM:%{!E:%{!S:%{nodefaultlibs:} %(linker) %l %X %{o*} %{e*} %{N} %{n} %{r} %{s} %{t} %{u*} %{z} %{Z} %{L*} %o %{l*} }}}}}}

@@ -610,7 +610,8 @@ TARGET_HOST_UNDEFS_illumos=
 TARGET_HOST_UNDEFS_linux=-Ulinux -U__linux -U__linux__
 TARGET_HOST_UNDEFS=$(TARGET_HOST_UNDEFS_$(NATIVE_OS))
 TARGET_TOOL_FLAGS_illumos=
-TARGET_TOOL_FLAGS_linux=-_gcc=-B$(GNU_ROOT)/bin/
+TARGET_TOOL_FLAGS_linux=-_gcc=-B$(GNU_ROOT)/bin/ \
+	-_gcc=-specs=$(ONBLD_TOOLS)/lib/illumos-gcc.specs
 TARGET_TOOL_FLAGS=$(TARGET_TOOL_FLAGS_$(NATIVE_OS))
 CPPFLAGS.first=	# Please keep empty.  Only lower makefiles should set this.
 CPPFLAGS.master=$(DTEXTDOM) $(DTS_ERRNO) $(GNUC_CMN_ERR) \
