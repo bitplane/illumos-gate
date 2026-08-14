@@ -962,6 +962,9 @@ do_gcc(cw_ictx_t *ctx)
 		char *slash;
 		char *flag;
 
+		/* The illumos link-editor requires operands to retain their order. */
+		if (setenv("POSIXLY_CORRECT", "1", 0) != 0)
+			err(2, "could not set POSIXLY_CORRECT");
 		if (dir == NULL)
 			nomem();
 		if ((slash = strrchr(dir, '/')) == NULL)
