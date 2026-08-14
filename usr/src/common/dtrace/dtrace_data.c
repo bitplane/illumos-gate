@@ -60,10 +60,18 @@
  * this data structure and the other places that need to be kept in sync.
  */
 
+#if defined(__GNUC__)
+#define	DTRACE_DATA_ALIGN	__attribute__((aligned(64)))
+#else
+#define	DTRACE_DATA_ALIGN
+#endif
+
 #if defined(__sparc)
 
+#if !defined(__GNUC__)
 #pragma align 64(dtrace_data)
-uint32_t	dtrace_data[32] = {
+#endif
+uint32_t	dtrace_data[32] DTRACE_DATA_ALIGN = {
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0x9de04000,			/* save %g1, %g0, %sp */
@@ -77,8 +85,10 @@ uint32_t	dtrace_data[32] = {
 
 #elif defined(__amd64)
 
+#if !defined(__GNUC__)
 #pragma align 64(dtrace_data)
-uint8_t	dtrace_data[64] = {
+#endif
+uint8_t	dtrace_data[64] DTRACE_DATA_ALIGN = {
 	0, 0, 0, 0, 0, 0, 0, 0,		/* self pointer (must be zero) */
 	0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -91,8 +101,10 @@ uint8_t	dtrace_data[64] = {
 
 #elif defined(__i386)
 
+#if !defined(__GNUC__)
 #pragma align 64(dtrace_data)
-uint8_t	dtrace_data[64] = {
+#endif
+uint8_t	dtrace_data[64] DTRACE_DATA_ALIGN = {
 	0, 0, 0, 0,			/* self pointer (must be zero)  */
 	0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0,
@@ -109,3 +121,5 @@ uint8_t	dtrace_data[64] = {
 #error "unknown ISA"
 
 #endif
+
+#undef DTRACE_DATA_ALIGN
