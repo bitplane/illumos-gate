@@ -678,6 +678,10 @@ main(int argc, char *argv[], char *envp[])
 	Half mach;
 	ld_main_f ld_main;
 
+#if defined(__linux__)
+	(void) setenv("POSIXLY_CORRECT", "1", 0);
+#endif
+
 	/*
 	 * Establish locale and initialize error strings.
 	 */
